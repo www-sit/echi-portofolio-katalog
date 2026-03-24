@@ -28,6 +28,7 @@
 
         .nav-glass { background: rgba(253, 251, 247, 0.96); backdrop-filter: blur(10px); z-index: 1000; }
         
+        /* Profile Section */
         .profile-wrapper {
             background: white;
             border-radius: 4rem;
@@ -52,41 +53,70 @@
             letter-spacing: -2px;
         }
 
+        /* UNIT CARD TATA LETAK BARU */
         .unit-card {
             background: white;
             border-radius: 3.5rem;
             padding: 1.5rem;
             border: 1px solid rgba(0,0,0,0.03);
-            transition: all 0.4s ease;
             margin-bottom: 2rem;
         }
 
-        .unit-visual-container {
-            display: flex;
-            gap: 15px;
-            height: 300px;
-            margin-bottom: 1.5rem;
-            align-items: center;
-        }
-
-        /* Kotak Foto Pendukung (Kiri) */
-        .photo-secondary-slider {
-            width: 250px;
-            height: 250px;
+        /* Container Visual (Sesuai gambar 131643.jpg) */
+        .unit-visual-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr; /* Kiri dan Kanan */
+            gap: 12px;
             background: #000;
             border-radius: 2.5rem;
+            padding: 12px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Kiri: Slider Foto Pendukung (Kotak) */
+        .photo-side-left {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .slider-box-container {
+            aspect-ratio: 1/1; /* Memastikan Kotak */
+            background: rgba(255,255,255,0.05);
+            border-radius: 1.8rem;
             overflow: hidden;
             position: relative;
-            flex-shrink: 0;
         }
 
-        /* Foto Utama (Kanan) */
-        .photo-primary {
-            flex-grow: 1;
-            height: 300px;
-            background: #000;
-            border-radius: 2.5rem;
+        /* Kanan: Foto Utama (Tinggi) */
+        .photo-main-right {
+            border-radius: 1.8rem;
             overflow: hidden;
+            height: 100%;
+        }
+
+        .unit-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            mix-blend-mode: screen;
+        }
+
+        /* Label Spesifikasi di atas Foto (Kotak Merah di Gambar) */
+        .spec-overlay {
+            position: absolute;
+            bottom: 25px;
+            left: 25px;
+            background: white;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--dark);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 20;
         }
 
         .slider-wrapper {
@@ -95,29 +125,20 @@
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .slider-item {
-            min-width: 100%;
-            height: 100%;
-        }
-
-        .unit-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            mix-blend-mode: screen; /* Efek Transparan Latar Hitam */
-        }
+        .slider-item { min-width: 100%; height: 100%; }
 
         .slider-nav {
             position: absolute;
-            bottom: 12px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 5px;
-            z-index: 10;
+            gap: 4px;
         }
-        .dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; }
-        .dot.active { background: white; width: 12px; border-radius: 10px; }
+        .dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; }
+        .dot.active { background: white; width: 10px; border-radius: 10px; }
+
+        .unit-info-content { padding: 0 10px; }
 
         select.dropdown-fase {
             appearance: none;
@@ -131,9 +152,8 @@
         }
 
         @media (max-width: 640px) {
-            .unit-visual-container { flex-direction: column; height: auto; }
-            .photo-secondary-slider { width: 100%; height: 250px; }
-            .photo-primary { width: 100%; height: 250px; }
+            .unit-visual-grid { grid-template-columns: 1fr; }
+            .photo-main-right { height: 300px; }
         }
     </style>
 </head>
@@ -161,7 +181,7 @@
                     <div class="mb-4"><span class="bg-[#a68966]/10 text-[#a68966] px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-[0.3em]">Official Sales In-House</span></div>
                     <h1 class="text-4xl md:text-5xl font-black text-[#4a3728] mb-2 tracking-tight">Halo, saya <span class="text-[#a68966]">Echi</span></h1>
                     <p class="text-lg font-bold text-gray-400 mb-8 italic italic">Lippoland Specialist | Park Serpong</p>
-                    <p class="text-gray-500 font-medium text-lg leading-relaxed mb-10">Membantu Anda menemukan hunian terbaik dengan penawaran eksklusif dan konsultasi profesional.</p>
+                    <p class="text-gray-500 font-medium text-lg leading-relaxed mb-10">Property Consultant berpengalaman untuk membantu Anda menemukan hunian impian di kawasan Park Serpong.</p>
                 </div>
             </div>
         </div>
@@ -175,7 +195,7 @@
             </div>
 
             <div class="flex justify-between items-center border-b-2 border-[#f0ece4] pb-6 mb-12">
-                <div class="text-2xl font-black lowercase tracking-tighter">pilih fase</div>
+                <div class="text-2xl font-black lowercase tracking-tighter">lihat unit</div>
                 <select id="fase-selector" onchange="renderGrid(this.value)" class="dropdown-fase">
                     <option value="7">Fase 7</option>
                     <option value="6">Fase 6</option>
@@ -183,7 +203,7 @@
                 </select>
             </div>
 
-            <div id="unit-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div id="unit-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <!-- Unit Card Injected by JS -->
             </div>
         </div>
@@ -211,27 +231,27 @@
     <script>
         const unitData = {
             5: [
-                { name: "Perunggu Livin Tipe B", tag: "305 Jt", val: 305000000, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
-                { name: "Perunggu Livin Tipe BB", tag: "390 Jt", val: 390000000, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
-                { name: "Quartz Livin Tipe Q", tag: "450 Jt", val: 450000000, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
-                { name: "TreeTops Livin Tipe", tag: "520 Jt", val: 520000000, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg", "unit-4.4.jpg"] },
-                { name: "Gold Livin Tipe G", tag: "580 Jt", val: 580000000, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"] },
-                { name: "GoldTops Livin Type GT", tag: "650 Jt", val: 650000000, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"] }
+                { name: "Perunggu Livin Tipe B", tag: "305 Jt", val: 305000000, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"], spec: "LT 60 / LB 45" },
+                { name: "Perunggu Livin Tipe BB", tag: "390 Jt", val: 390000000, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"], spec: "LT 72 / LB 55" },
+                { name: "Quartz Livin Tipe Q", tag: "450 Jt", val: 450000000, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"], spec: "LT 60 / LB 50" },
+                { name: "TreeTops Livin Tipe", tag: "520 Jt", val: 520000000, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg", "unit-4.4.jpg"], spec: "LT 80 / LB 65" },
+                { name: "Gold Livin Tipe G", tag: "580 Jt", val: 580000000, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"], spec: "LT 90 / LB 75" },
+                { name: "GoldTops Livin Type GT", tag: "650 Jt", val: 650000000, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"], spec: "LT 100 / LB 85" }
             ],
             6: [
-                { name: "Perunggu Livin Tipe B", tag: "315 Jt", val: 315000000, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
-                { name: "Quartz Livin Tipe Q", tag: "460 Jt", val: 460000000, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
-                { name: "TreeTops Livin", tag: "530 Jt", val: 530000000, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
-                { name: "Gold Livin Tipe G", tag: "595 Jt", val: 595000000, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"] },
-                { name: "GoldTops Livin Type GT", tag: "670 Jt", val: 670000000, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg", "unit-5.4.jpg"] }
+                { name: "Perunggu Livin Tipe B", tag: "315 Jt", val: 315000000, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"], spec: "LT 60 / LB 45" },
+                { name: "Quartz Livin Tipe Q", tag: "460 Jt", val: 460000000, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"], spec: "LT 60 / LB 50" },
+                { name: "TreeTops Livin", tag: "530 Jt", val: 530000000, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"], spec: "LT 80 / LB 65" },
+                { name: "Gold Livin Tipe G", tag: "595 Jt", val: 595000000, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"], spec: "LT 90 / LB 75" },
+                { name: "GoldTops Livin Type GT", tag: "670 Jt", val: 670000000, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg", "unit-5.4.jpg"], spec: "LT 100 / LB 85" }
             ],
             7: [
-                { name: "Perunggu Beverly Livin", tag: "325 Jt", val: 325000000, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
-                { name: "Silver Beverly Livin", tag: "410 Jt", val: 410000000, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
-                { name: "Urban Beverly Livin", tag: "500 Jt", val: 500000000, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
-                { name: "TreeTops Beverly Livin", tag: "550 Jt", val: 550000000, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"] },
-                { name: "Gold Beverly Livin", tag: "610 Jt", val: 610000000, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"] },
-                { name: "GoldTops Beverly Livin", tag: "690 Jt", val: 690000000, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"] }
+                { name: "Perunggu Beverly Livin", tag: "325 Jt", val: 325000000, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"], spec: "LT 60 / LB 45" },
+                { name: "Silver Beverly Livin", tag: "410 Jt", val: 410000000, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"], spec: "LT 72 / LB 55" },
+                { name: "Urban Beverly Livin", tag: "500 Jt", val: 500000000, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"], spec: "LT 60 / LB 60" },
+                { name: "TreeTops Beverly Livin", tag: "550 Jt", val: 550000000, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"], spec: "LT 80 / LB 65" },
+                { name: "Gold Beverly Livin", tag: "610 Jt", val: 610000000, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"], spec: "LT 90 / LB 75" },
+                { name: "GoldTops Beverly Livin", tag: "690 Jt", val: 690000000, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"], spec: "LT 100 / LB 85" }
             ]
         };
 
@@ -255,27 +275,37 @@
 
                 grid.innerHTML += `
                     <div class="unit-card" data-aos="fade-up">
-                        <div class="unit-visual-container">
-                            <div class="photo-secondary-slider">
-                                <div class="slider-wrapper" id="wrapper-${uniqueId}">
-                                    ${sliderItems}
-                                </div>
-                                <div class="slider-nav" id="dots-${uniqueId}">
-                                    ${dots}
+                        <div class="unit-visual-grid">
+                            <!-- Overlay Ukuran & Kamar (Kotak Merah) -->
+                            <div class="spec-overlay">${u.spec}</div>
+                            
+                            <!-- Sisi Kiri: Slider Kotak -->
+                            <div class="photo-side-left">
+                                <div class="slider-box-container">
+                                    <div class="slider-wrapper" id="wrapper-${uniqueId}">
+                                        ${sliderItems}
+                                    </div>
+                                    <div class="slider-nav" id="dots-${uniqueId}">
+                                        ${dots}
+                                    </div>
                                 </div>
                             </div>
                             
-                            <div class="photo-primary">
-                                <img src="fase-${phase}/${mainPhoto}" class="unit-img" onerror="this.src='https://placehold.co/500x300?text=Utama'">
+                            <!-- Sisi Kanan: Foto Utama -->
+                            <div class="photo-main-right">
+                                <img src="fase-${phase}/${mainPhoto}" class="unit-img" onerror="this.src='https://placehold.co/400x500?text=Utama'">
                             </div>
                         </div>
 
-                        <div class="px-2">
+                        <!-- Deskripsi (Kotak Kuning) -->
+                        <div class="unit-info-content">
                             <h4 class="text-2xl font-black text-[#4a3728] uppercase tracking-tighter mb-1">${u.name}</h4>
-                            <p class="text-[9px] font-bold text-[#a68966] uppercase tracking-[0.3em] mb-4">Park Serpong Fase ${phase}</p>
-                            <div class="mb-8">
-                                <p class="text-[10px] font-bold text-gray-400 uppercase">Harga Mulai</p>
-                                <p class="text-4xl font-black text-[#a68966] italic">Rp ${u.tag}</p>
+                            <p class="text-[9px] font-bold text-[#a68966] uppercase tracking-[0.3em] mb-4">Park Serpong Fase ${phase} Portfolio</p>
+                            <div class="flex justify-between items-end mb-8">
+                                <div>
+                                    <p class="text-[10px] font-bold text-gray-400 uppercase">Harga Mulai</p>
+                                    <p class="text-4xl font-black text-[#a68966] italic">Rp ${u.tag}</p>
+                                </div>
                             </div>
                             <div class="flex gap-4">
                                 <button onclick="setKPR(${u.val})" class="flex-1 py-4 border-2 border-gray-100 rounded-2xl font-bold text-[9px] uppercase tracking-widest hover:bg-gray-50 transition-all">Simulasi</button>
@@ -319,4 +349,4 @@
         window.onload = () => { AOS.init({ duration: 800, once: true }); renderGrid(7); }
     </script>
 </body>
-                                                                                                                                                                                            </html>
+</html>
