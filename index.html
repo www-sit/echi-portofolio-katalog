@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nefsi Asrifah | Echi - Official Property Catalog</title>
+    <title>Nefsi Asrifah | Echi - Park Serpong Portfolio</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -28,220 +28,310 @@
 
         .nav-glass { background: rgba(253, 251, 247, 0.96); backdrop-filter: blur(10px); z-index: 1000; }
         
-        .phase-btn {
-            background-color: white;
-            color: var(--dark);
-            border: 2px solid #e5e7eb;
-            transition: all 0.3s ease;
-            min-width: 140px;
-        }
-        .phase-btn.active {
-            background-color: var(--dark);
-            color: white;
-            border-color: var(--dark);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        .unit-img-wrapper {
-            background-color: #000;
-            border-radius: 2.5rem;
-            height: 320px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-        
-        .unit-img-main {
-            max-height: 100%;
-            width: auto;
-            object-fit: contain;
-            mix-blend-mode: screen; 
-            filter: contrast(1.1) brightness(1.1);
-        }
-
-        .unit-card {
+        /* Profile Section (Locked) */
+        .profile-wrapper {
             background: white;
-            padding: 1.5rem;
-            border-radius: 3rem;
-            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.02);
-        }
-
-        #gallery-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.98);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
+            border-radius: 4rem;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0,0,0,0.03);
+            overflow: hidden;
+            display: flex;
             flex-direction: column;
         }
-        #gallery-overlay.active { display: flex; }
-        .gallery-img { max-height: 75vh; max-width: 90%; border-radius: 1.5rem; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        @media (min-width: 768px) {
+            .profile-wrapper { flex-direction: row; align-items: stretch; min-height: 550px; }
+            .profile-img-side { width: 45%; }
+            .profile-info-side { width: 55%; padding: 5rem; }
+        }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .park-serpong-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #4a3728, #a68966, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+        }
+
+        /* UNIT CARD LAYOUT (Ref: 131643.jpg) */
+        .unit-card {
+            background: white;
+            border-radius: 3.5rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: all 0.4s ease;
+        }
+        .unit-card:hover { transform: translateY(-12px); box-shadow: 0 30px 60px rgba(0,0,0,0.06); }
+
+        .unit-visual-container {
+            display: flex;
+            gap: 12px;
+            height: 400px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Slider Foto Pendukung (Kiri) */
+        .photo-secondary-slider {
+            flex: 1;
+            background: #000;
+            border-radius: 2.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slider-wrapper {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slider-item {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        /* Foto Utama (Kanan) */
+        .photo-primary {
+            flex: 1.2;
+            background: #000;
+            border-radius: 2.5rem;
+            overflow: hidden;
+        }
+
+        .unit-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            mix-blend-mode: screen; /* Transparansi Latar Hitam */
+        }
+
+        /* Navigasi Slider */
+        .slider-nav {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+        }
+        .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: 0.3s; cursor: pointer; }
+        .dot.active { background: white; width: 15px; border-radius: 10px; }
+
+        .unit-specs {
+            background: #fdfbf7;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--dark);
+            border: 1px solid #f0ece4;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .unit-desc {
+            font-size: 13px;
+            color: #888;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        select.dropdown-fase {
+            appearance: none;
+            background: white;
+            border: 1px solid #eee;
+            padding: 12px 30px;
+            border-radius: 15px;
+            font-weight: 800;
+            font-size: 12px;
+            outline: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
     <!-- NAVIGASI -->
-    <nav class="fixed w-full nav-glass px-6 py-5 border-b border-gray-100">
+    <nav class="fixed w-full nav-glass px-8 py-6 border-b border-gray-100">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="font-extrabold text-xl tracking-tighter uppercase text-[#4a3728]">NEFSI ASRIFAH | <span class="text-[#a68966]">ECHI</span></div>
-            <div class="hidden md:flex gap-10 font-bold text-[10px] uppercase tracking-[0.3em]">
-                <a href="#home" class="hover:text-[#a68966] transition-colors">Home</a>
-                <a href="#katalog" class="hover:text-[#a68966] transition-colors">Katalog</a>
-                <a href="#kpr" class="hover:text-[#a68966] transition-colors">Simulasi KPR</a>
+            <div class="font-extrabold text-2xl tracking-tighter">NEFSI ASRIFAH <span class="text-[#a68966]">| ECHI</span></div>
+            <div class="hidden md:flex gap-10 font-bold text-[10px] uppercase tracking-[0.4em]">
+                <a href="#home">Home</a>
+                <a href="#katalog">Katalog</a>
+                <a href="#kpr">Simulasi KPR</a>
             </div>
-            <div class="md:hidden text-xl"><i class="fas fa-bars"></i></div>
+            <a href="https://wa.me/628111982833" target="_blank" class="bg-[#4a3728] text-white px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest">Hubungi Kami</a>
         </div>
     </nav>
 
-    <!-- PROFIL HERO SECTION -->
+    <!-- PROFIL HERO -->
     <section id="home" class="pt-44 pb-20 px-6">
-        <div class="max-w-4xl mx-auto text-center" data-aos="fade-down">
-            <div class="w-36 h-36 mx-auto mb-10 rounded-full border-[6px] border-white shadow-2xl overflow-hidden">
-                <img src="wajah.jpg" alt="Nefsi Asrifah" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x400?text=Echi'">
+        <div class="max-w-6xl mx-auto">
+            <div class="profile-wrapper" data-aos="fade-up">
+                <div class="profile-img-side">
+                    <img src="wajah.jpg" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop'">
+                </div>
+                <div class="profile-info-side">
+                    <div class="mb-4"><span class="bg-[#a68966]/10 text-[#a68966] px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-[0.3em]">Official Sales In-House</span></div>
+                    <h1 class="text-4xl md:text-5xl font-black text-[#4a3728] mb-2 tracking-tight">Halo, saya <span class="text-[#a68966]">Echi</span></h1>
+                    <p class="text-lg font-bold text-gray-400 mb-8 italic">Property Consultant | Trusted & Result-Oriented</p>
+                    <p class="text-gray-500 font-medium text-lg leading-relaxed mb-10">
+                        Menghadirkan solusi hunian terbaik dengan nilai investasi yang menjanjikan di kawasan mandiri Park Serpong.
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <a href="https://wa.me/628111982833" target="_blank" class="bg-[#fdfbf7] p-4 rounded-xl border border-gray-100 hover:bg-[#4a3728] hover:text-white transition-all"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="bg-[#fdfbf7] p-4 rounded-xl border border-gray-100 hover:bg-[#4a3728] hover:text-white transition-all"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
             </div>
-            <h1 class="text-4xl md:text-6xl font-black text-[#4a3728] mb-6 tracking-tight">Halo, Saya <span class="text-[#a68966]">Echi</span></h1>
-            <p class="text-gray-500 font-semibold text-lg max-w-2xl mx-auto leading-relaxed">
-                Official Sales In-House <span class="text-[#4a3728]">Park Serpong</span>. 
-                Berpengalaman dalam membantu ratusan keluarga menemukan hunian masa depan mereka. 
-                Mari wujudkan impian Anda bersama saya.
-            </p>
         </div>
     </section>
 
-    <!-- KATALOG UNITS -->
-    <section id="katalog" class="pb-32 px-6">
+    <!-- KATALOG PARK SERPONG -->
+    <section id="katalog" class="py-20 px-6">
         <div class="max-w-7xl mx-auto">
-            <div class="flex gap-4 overflow-x-auto no-scrollbar pb-12 mb-10 justify-start md:justify-center">
-                <button onclick="renderGrid(7)" id="btn-7" class="phase-btn px-10 py-5 rounded-2xl font-bold text-[10px] uppercase tracking-widest shadow-sm">Fase 7</button>
-                <button onclick="renderGrid(6)" id="btn-6" class="phase-btn px-10 py-5 rounded-2xl font-bold text-[10px] uppercase tracking-widest shadow-sm">Fase 6</button>
-                <button onclick="renderGrid(5)" id="btn-5" class="phase-btn px-10 py-5 rounded-2xl font-bold text-[10px] uppercase tracking-widest shadow-sm">Fase 5</button>
+            
+            <div class="text-center mb-16" data-aos="fade-down">
+                <h2 class="park-serpong-title">Park Serpong</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-[#4a3728] to-[#a68966] mx-auto mt-4 rounded-full"></div>
             </div>
 
-            <div id="unit-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <!-- Javascript will inject cards here -->
+            <div class="flex justify-between items-center border-b-2 border-[#f0ece4] pb-6 mb-12">
+                <div class="text-2xl font-black lowercase tracking-tighter">lihat unit</div>
+                <select id="fase-selector" onchange="renderGrid(this.value)" class="dropdown-fase">
+                    <option value="7">Fase 7</option>
+                    <option value="6">Fase 6</option>
+                    <option value="5">Fase 5</option>
+                </select>
+            </div>
+
+            <div id="unit-grid" class="grid md:grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Unit Card Injected via JS -->
             </div>
         </div>
     </section>
 
-    <!-- SIMULASI KPR -->
-    <section id="kpr" class="py-24 px-6 bg-white rounded-[5rem] mx-4 shadow-2xl mb-24 border border-gray-50">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-16">
-                <span class="text-[#a68966] text-[10px] font-bold uppercase tracking-[0.4em]">Financial Plan</span>
-                <h3 class="text-3xl font-black text-[#4a3728] mt-2 uppercase tracking-tighter">Simulasi KPR Mandiri</h3>
-            </div>
-            <div class="grid md:grid-cols-2 gap-16 items-center">
+    <!-- KPR SIMULASI -->
+    <section id="kpr" class="py-24 px-6 mb-24">
+        <div class="max-w-5xl mx-auto bg-white p-12 md:p-20 rounded-[4rem] shadow-2xl border border-gray-50 text-center">
+            <h3 class="text-3xl font-black text-[#4a3728] uppercase tracking-tighter mb-12">Simulasi KPR</h3>
+            <div class="grid md:grid-cols-2 gap-16 text-left">
                 <div class="space-y-10">
                     <div>
-                        <label class="text-[10px] font-bold text-gray-400 uppercase mb-3 block tracking-widest">Harga Properti (Rp)</label>
-                        <input type="text" id="kpr-disp" value="305.000.000" oninput="formatInput(this)" class="w-full text-3xl font-black outline-none border-b-4 border-gray-100 bg-transparent focus:border-[#a68966] transition-all">
-                        <input type="hidden" id="kpr-raw" value="305000000">
-                    </div>
-                    <div class="flex gap-10">
-                        <div class="w-1/2">
-                            <label class="text-[10px] font-bold text-gray-400 uppercase mb-2 block tracking-widest">DP (%)</label>
-                            <input type="number" id="kpr-dp" value="5" oninput="calculateKPR()" class="w-full font-black text-xl border-b-2 border-gray-100 outline-none focus:border-[#a68966] transition-all">
-                        </div>
-                        <div class="w-1/2">
-                            <label class="text-[10px] font-bold text-gray-400 uppercase mb-2 block tracking-widest">Tenor (Thn)</label>
-                            <input type="number" id="kpr-tenor" value="20" oninput="calculateKPR()" class="w-full font-black text-xl border-b-2 border-gray-100 outline-none focus:border-[#a68966] transition-all">
-                        </div>
+                        <label class="text-[10px] font-bold text-gray-400 uppercase mb-3 block">Harga Properti</label>
+                        <input type="text" id="kpr-disp" value="325.000.000" oninput="formatInput(this)" class="w-full text-4xl font-black outline-none border-b-4 border-gray-100 bg-transparent focus:border-[#a68966]">
+                        <input type="hidden" id="kpr-raw" value="325000000">
                     </div>
                 </div>
-                <div class="bg-[#fdfbf7] p-12 rounded-[3.5rem] text-center border border-[#f0ece4] shadow-inner">
-                    <span class="text-[11px] font-bold text-gray-400 uppercase mb-4 block tracking-[0.2em]">Estimasi Cicilan / Bulan</span>
-                    <h4 id="kpr-res" class="text-5xl font-black text-[#a68966] mb-10 tracking-tighter">Rp 1.900.000</h4>
-                    <button onclick="sendKPR()" class="w-full bg-[#4a3728] text-white py-5 rounded-2xl font-bold text-xs uppercase tracking-[0.2em] shadow-xl hover:bg-[#a68966] transition-all transform hover:-translate-y-1">Konsultasi Gratis</button>
+                <div class="bg-[#fdfbf7] p-10 rounded-[3rem] border border-[#eee]">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-4 text-center">Estimasi Cicilan</p>
+                    <h4 id="kpr-res" class="text-4xl font-black text-[#a68966] text-center mb-8">Rp 2.050.000</h4>
+                    <button onclick="window.open('https://wa.me/628111982833')" class="w-full bg-[#4a3728] text-white py-5 rounded-2xl font-bold text-[10px] uppercase tracking-widest">Konsultasi WA</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- GALERI OVERLAY -->
-    <div id="gallery-overlay" onclick="closeGallery()">
-        <button class="absolute top-10 right-10 text-white text-4xl opacity-50 hover:opacity-100 transition-opacity"><i class="fas fa-times"></i></button>
-        <div class="relative w-full flex items-center justify-center" onclick="event.stopPropagation()">
-            <button onclick="changeImg(-1)" class="absolute left-6 md:left-14 text-white/30 hover:text-white text-6xl transition-all"><i class="fas fa-chevron-left"></i></button>
-            <img id="modal-img" src="" class="gallery-img">
-            <button onclick="changeImg(1)" class="absolute right-6 md:right-14 text-white/30 hover:text-white text-6xl transition-all"><i class="fas fa-chevron-right"></i></button>
-        </div>
-        <div id="counter" class="mt-12 text-white font-bold text-xs uppercase tracking-[0.5em] bg-white/10 px-6 py-2 rounded-full"></div>
-    </div>
-
-    <footer class="py-20 text-center">
-        <div class="font-black text-[#4a3728] text-xl mb-4 tracking-tighter uppercase">NEFSI ASRIFAH</div>
-        <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.6em]">Official Sales • Park Serpong 2026</p>
+    <footer class="py-20 text-center border-t border-gray-100">
+        <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.5em]">Nefsi Asrifah • Park Serpong Specialist</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        const WA_NUM = "628111982833";
-
-        // DATA SESUAI KONFIRMASI (FOLDER + NAMA UNIT)
+        // Data Unit dengan list foto pendukung sesuai struktur Kakak
         const unitData = {
-            5: [
-                { name: "Perunggu Livin Tipe B", tag: "305 Jt", val: 305000000, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
-                { name: "Perunggu Livin Tipe BB", tag: "390 Jt", val: 390000000, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
-                { name: "Quartz Livin Tipe Q", tag: "450 Jt", val: 450000000, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
-                { name: "TreeTops Livin Tipe", tag: "520 Jt", val: 520000000, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg", "unit-4.4.jpg"] },
-                { name: "Gold Livin Tipe G", tag: "580 Jt", val: 580000000, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"] },
-                { name: "GoldTops Livin Type GT", tag: "650 Jt", val: 650000000, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"] }
+            7: [
+                { 
+                    id: "u71",
+                    name: "Perunggu Beverly Livin", 
+                    specs: "LT 60 / LB 45 • 2 Kamar", 
+                    desc: "Tipe hunian ideal bagi keluarga muda dengan desain modern minimalis di kawasan strategis Fase 7.", 
+                    price: "325 Jt", 
+                    val: 325000000, 
+                    imgMain: "unit-1.jpg", 
+                    imgSec: ["unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] 
+                },
+                { 
+                    id: "u72",
+                    name: "Silver Beverly Livin", 
+                    specs: "LT 72 / LB 60 • 3 Kamar", 
+                    desc: "Hadir dengan ruang tamu lebih lapang dan ventilasi udara maksimal untuk kenyamanan hunian anda.", 
+                    price: "410 Jt", 
+                    val: 410000000, 
+                    imgMain: "unit-2.jpg", 
+                    imgSec: ["unit-2.1.jpg", "unit-2.2.jpg"] 
+                }
             ],
             6: [
-                { name: "Perunggu Livin Tipe B", tag: "315 Jt", val: 315000000, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
-                { name: "Quartz Livin Tipe Q", tag: "460 Jt", val: 460000000, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
-                { name: "TreeTops Livin", tag: "530 Jt", val: 530000000, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
-                { name: "Gold Livin Tipe G", tag: "595 Jt", val: 595000000, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"] },
-                { name: "GoldTops Livin Type GT", tag: "670 Jt", val: 670000000, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg", "unit-5.4.jpg"] }
+                { 
+                    id: "u61",
+                    name: "Quartz Livin Tipe Q", 
+                    specs: "LT 60 / LB 50 • 2 Kamar", 
+                    desc: "Quartz Livin menawarkan estetika hunian urban yang fungsional di tengah kemajuan Park Serpong.", 
+                    price: "460 Jt", 
+                    val: 460000000, 
+                    imgMain: "unit-2.jpg", 
+                    imgSec: ["unit-2.1.jpg", "unit-2.2.jpg"] 
+                }
             ],
-            7: [
-                { name: "Perunggu Beverly Livin", tag: "325 Jt", val: 325000000, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
-                { name: "Silver Beverly Livin", tag: "410 Jt", val: 410000000, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
-                { name: "Urban Beverly Livin", tag: "500 Jt", val: 500000000, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
-                { name: "TreeTops Beverly Livin", tag: "550 Jt", val: 550000000, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"] },
-                { name: "Gold Beverly Livin", tag: "610 Jt", val: 610000000, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"] },
-                { name: "GoldTops Beverly Livin", tag: "690 Jt", val: 690000000, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"] }
+            5: [
+                { 
+                    id: "u51",
+                    name: "Perunggu Livin Tipe B", 
+                    specs: "LT 55 / LB 40 • 2 Kamar", 
+                    desc: "Opsi investasi terbaik dengan harga yang kompetitif di pengembangan Fase 5.", 
+                    price: "305 Jt", 
+                    val: 305000000, 
+                    imgMain: "unit-1.jpg", 
+                    imgSec: ["unit-1.1.jpg"] 
+                }
             ]
         };
 
-        let currentActivePhotos = [];
-        let currentIdx = 0;
-
         function renderGrid(phase) {
-            document.querySelectorAll('.phase-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-'+phase).classList.add('active');
             const grid = document.getElementById('unit-grid');
             grid.innerHTML = '';
-            
-            unitData[phase].forEach((u, i) => {
+            unitData[phase].forEach(u => {
+                const sliderItems = u.imgSec.map(img => `
+                    <div class="slider-item">
+                        <img src="fase-${phase}/${img}" class="unit-img" onerror="this.src='https://placehold.co/300x400?text=Interior'">
+                    </div>
+                `).join('');
+
+                const dots = u.imgSec.map((_, i) => `
+                    <div class="dot ${i === 0 ? 'active' : ''}" onclick="moveSlider('${u.id}', ${i})"></div>
+                `).join('');
+
                 grid.innerHTML += `
-                    <div class="unit-card" data-aos="fade-up" data-aos-delay="${i*50}">
-                        <div class="unit-img-wrapper cursor-pointer group" onclick="openGallery(${phase}, ${i})">
-                            <img src="fase-${phase}/${u.photos[0]}" class="unit-img-main transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/600x400?text=${u.name}'">
-                            <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-all"></div>
-                            <div class="absolute bottom-6 right-6 bg-white/20 backdrop-blur-md text-white text-[10px] font-bold px-4 py-2 rounded-full border border-white/30">
-                                <i class="fas fa-expand-arrows-alt mr-2"></i> LIHAT DETAIL
+                    <div class="unit-card" data-aos="fade-up">
+                        <div class="unit-visual-container">
+                            <div class="photo-secondary-slider" id="slider-container-${u.id}">
+                                <div class="slider-wrapper" id="wrapper-${u.id}">
+                                    ${sliderItems}
+                                </div>
+                                <div class="slider-nav" id="dots-${u.id}">
+                                    ${dots}
+                                </div>
+                            </div>
+                            <div class="photo-primary">
+                                <img src="fase-${phase}/${u.imgMain}" class="unit-img" onerror="this.src='https://placehold.co/300x400?text=Utama'">
                             </div>
                         </div>
-                        <h4 class="text-xl font-black uppercase text-[#4a3728] mb-1 tracking-tighter">${u.name}</h4>
-                        <p class="text-[10px] font-extrabold text-[#a68966] uppercase tracking-[0.3em] mb-6">Fase ${phase} Portfolio</p>
-                        <div class="flex items-end justify-between mb-8">
-                            <div>
-                                <span class="text-[9px] font-bold text-gray-400 block mb-1 uppercase tracking-widest">Mulai Dari</span>
-                                <p class="text-4xl font-black italic text-[#4a3728] tracking-tighter">Rp ${u.tag}</p>
+
+                        <div class="px-2">
+                            <div class="unit-specs">${u.specs}</div>
+                            <h4 class="text-2xl font-black text-[#4a3728] uppercase tracking-tighter mb-1">${u.name}</h4>
+                            <p class="text-[9px] font-bold text-[#a68966] uppercase tracking-[0.3em] mb-4">Fase ${phase} Portfolio</p>
+                            <p class="unit-desc">${u.desc}</p>
+                            <div class="mb-8">
+                                <p class="text-[10px] font-bold text-gray-400 uppercase">Mulai Dari</p>
+                                <p class="text-4xl font-black text-[#a68966] italic">Rp ${u.price}</p>
                             </div>
-                        </div>
-                        <div class="flex gap-4">
-                            <button onclick="setKPR(${u.val})" class="flex-1 py-5 border-2 border-gray-100 rounded-2xl font-bold text-[10px] uppercase tracking-widest hover:bg-gray-50 transition-all">Simulasi</button>
-                            <button onclick="chatWA('${u.name}')" class="flex-1 py-5 bg-[#a68966] text-white rounded-2xl font-bold text-[10px] uppercase tracking-widest shadow-xl shadow-[#a68966]/20 hover:brightness-110 transition-all">WhatsApp</button>
+                            <div class="flex gap-4">
+                                <button onclick="setKPR(${u.val})" class="flex-1 py-4 border-2 border-gray-100 rounded-2xl font-bold text-[9px] uppercase tracking-widest hover:bg-gray-50 transition-all">Simulasi</button>
+                                <button onclick="window.open('https://wa.me/628111982833')" class="flex-1 py-4 bg-[#a68966] text-white rounded-2xl font-bold text-[9px] uppercase tracking-widest shadow-lg shadow-[#a68966]/20">WhatsApp</button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -249,20 +339,15 @@
             AOS.refresh();
         }
 
-        function openGallery(phase, unitIdx) {
-            currentActivePhotos = unitData[phase][unitIdx].photos.map(p => `fase-${phase}/${p}`);
-            currentIdx = 0;
-            updateModal();
-            document.getElementById('gallery-overlay').classList.add('active');
-            document.body.style.overflow = 'hidden';
+        function moveSlider(id, index) {
+            const wrapper = document.getElementById(`wrapper-${id}`);
+            const dots = document.getElementById(`dots-${id}`).querySelectorAll('.dot');
+            wrapper.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach(d => d.classList.remove('active'));
+            dots[index].classList.add('active');
         }
-        function closeGallery() { document.getElementById('gallery-overlay').classList.remove('active'); document.body.style.overflow = 'auto'; }
-        function updateModal() {
-            document.getElementById('modal-img').src = currentActivePhotos[currentIdx];
-            document.getElementById('counter').innerText = `${currentIdx + 1} / ${currentActivePhotos.length}`;
-        }
-        function changeImg(dir) { currentIdx = (currentIdx + dir + currentActivePhotos.length) % currentActivePhotos.length; updateModal(); }
 
+        // KPR Utility
         function formatIDR(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function formatInput(el) {
             let v = el.value.replace(/\D/g, "");
@@ -272,12 +357,8 @@
         }
         function calculateKPR() {
             const h = parseFloat(document.getElementById('kpr-raw').value) || 0;
-            const d = parseFloat(document.getElementById('kpr-dp').value) || 0;
-            const t = parseFloat(document.getElementById('kpr-tenor').value) || 0;
-            const p = h * (1 - (d/100));
-            const r = 0.05 / 12; // Suku bunga 5% per tahun
-            const n = t * 12;
-            const res = n > 0 ? (p * r) / (1 - Math.pow(1 + r, -n)) : 0;
+            const r = 0.05 / 12; const n = 20 * 12;
+            const res = (h * 0.95 * r) / (1 - Math.pow(1 + r, -n));
             document.getElementById('kpr-res').innerText = "Rp " + formatIDR(Math.round(res));
         }
         function setKPR(v) {
@@ -286,17 +367,8 @@
             calculateKPR();
             document.getElementById('kpr').scrollIntoView({behavior: 'smooth'});
         }
-        function chatWA(n) { window.open(`https://wa.me/${WA_NUM}?text=Halo Kak Echi, saya tertarik dengan unit ${n}. Mohon info detailnya.`, '_blank'); }
-        function sendKPR() {
-            const h = document.getElementById('kpr-disp').value;
-            const r = document.getElementById('kpr-res').innerText;
-            window.open(`https://wa.me/${WA_NUM}?text=Halo Kak Echi, saya ingin konsultasi KPR untuk harga Rp ${h} dengan estimasi cicilan ${r}.`, '_blank');
-        }
 
-        window.onload = () => { 
-            AOS.init({ duration: 1000, once: true }); 
-            renderGrid(7); // Default ke Fase 7 sesuai request terakhir
-        }
+        window.onload = () => { AOS.init({ duration: 800, once: true }); renderGrid(7); }
     </script>
 </body>
-</html>
+                </html>
