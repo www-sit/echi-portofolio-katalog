@@ -52,7 +52,7 @@
             transition: all 0.3s ease;
         }
 
-        /* Grid Visual: Kiri (Slider Tunggal) & Kanan (Utama) */
+        /* Grid Visual Desktop: Slider(Kiri) & Utama(Kanan) */
         .visual-layout {
             display: grid;
             grid-template-columns: 1fr 1.2fr; 
@@ -84,7 +84,7 @@
             mix-blend-mode: normal;
         }
 
-        /* Slider Styles */
+        /* Slider Engine */
         .slider-container { width: 100%; height: 100%; position: relative; }
         .slider-wrapper { display: flex; height: 100%; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
         .slider-item { min-width: 100%; height: 100%; }
@@ -108,10 +108,24 @@
             letter-spacing: -1.5px;
         }
 
+        /* MOBILE OPTIMIZATION */
         @media (max-width: 640px) {
-            .visual-layout { height: 650px; grid-template-columns: 1fr; }
-            .photo-box { height: 300px; }
-            .photo-main-right { height: 350px; }
+            .visual-layout { 
+                height: auto; 
+                grid-template-columns: 1fr; 
+                display: flex;
+                flex-direction: column; /* Utama di atas, Pendukung di bawah */
+            }
+            .photo-main-right { 
+                height: 300px; 
+                order: 1; /* Paksa posisi utama ke atas */
+                margin-bottom: 8px;
+            }
+            .photo-box { 
+                height: 220px; 
+                order: 2; /* Paksa posisi slider ke bawah */
+            }
+            .price-tag { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -160,7 +174,7 @@
             </div>
 
             <div id="unit-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Konten Katalog oleh JS -->
+                <!-- Konten Katalog -->
             </div>
         </div>
     </section>
@@ -216,9 +230,8 @@
             unitData[phase].forEach((u, uIdx) => {
                 const uniqueId = `u-${phase}-${uIdx}`;
                 
-                // Distribusi foto:
-                const mainPhoto = u.photos[0]; // UTAMA: Kanan
-                const subPhotos = u.photos.slice(1); // PENDUKUNG: Kiri (Slider Tunggal)
+                const mainPhoto = u.photos[0]; 
+                const subPhotos = u.photos.slice(1); 
 
                 const createSlider = (photoList) => {
                     if (photoList.length === 0) photoList = [u.photos[0]];
@@ -238,17 +251,17 @@
                 grid.innerHTML += `
                     <div class="unit-card" data-aos="fade-up">
                         <div class="visual-layout">
-                            <!-- Sisi Kiri: Slider Pendukung Tunggal -->
+                            <!-- Unit Utama (Di atas pada Mobile) -->
+                            <div class="photo-main-right">
+                                <img src="fase-${phase}/${mainPhoto}" class="unit-img" onerror="this.src='https://placehold.co/400x600?text=Main+Unit'">
+                                <div class="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white text-[8px] px-3 py-1 rounded-full uppercase font-bold tracking-widest">Unit Utama</div>
+                            </div>
+                            <!-- Slider Pendukung (Di bawah pada Mobile) -->
                             <div class="photo-box">
                                 <div class="slider-container">
                                     <div class="slider-wrapper" id="wrap-${uniqueId}">${subSlider.items}</div>
                                     <div class="dot-nav" id="dots-${uniqueId}">${subSlider.dots}</div>
                                 </div>
-                            </div>
-                            <!-- Sisi Kanan: Unit Utama -->
-                            <div class="photo-main-right">
-                                <img src="fase-${phase}/${mainPhoto}" class="unit-img" onerror="this.src='https://placehold.co/400x600?text=Main+Unit'">
-                                <div class="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white text-[8px] px-3 py-1 rounded-full uppercase font-bold tracking-widest">Unit Utama</div>
                             </div>
                         </div>
 
@@ -305,4 +318,4 @@
         window.onload = () => { AOS.init({ duration: 800, once: true }); renderGrid(7); }
     </script>
 </body>
-    </html>
+</html>
