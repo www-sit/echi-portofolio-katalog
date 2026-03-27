@@ -34,7 +34,7 @@
             border-bottom: 1px solid #f0f0f0;
         }
 
-        /* --- PROFILE DRAG & TRANSFORM LOGIC --- */
+        /* --- PROFILE DRAG & TRANSFORM --- */
         #profile-trigger {
             touch-action: pan-y;
             cursor: grab;
@@ -68,18 +68,13 @@
             flex-shrink: 0;
         }
 
-        .profile-text-content {
-            transition: all 0.5s ease;
-        }
-
-        /* State Transformasi (Ditarik atau Scrolled) */
+        /* Transform State */
         .is-transformed .profile-container {
             flex-direction: row;
             align-items: center;
             text-align: left;
             padding-left: 20px;
             padding-right: 20px;
-            padding-top: 100px;
         }
 
         .is-transformed .profile-image-wrapper {
@@ -90,46 +85,35 @@
             margin-right: 20px;
         }
 
-        /* --- UI ELEMENTS --- */
-        .section-header-text {
-            font-size: 14px; font-weight: 900; text-transform: uppercase;
-            letter-spacing: 0.3em; color: var(--dark); margin-bottom: 15px; text-align: center;
-        }
-
+        /* --- UNIT CARD LAYOUT --- */
         .unit-card {
             background: white; border-radius: 2rem; overflow: hidden;
             border: 1px solid #f0ebe3; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            margin-bottom: 2.5rem;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 3rem;
         }
 
+        /* FOTO UTAMA 1:1 */
         .hero-view {
-            width: 100%; aspect-ratio: 16/10; background: #1a1a1a;
+            width: 100%; aspect-ratio: 1/1; background: #1a1a1a;
             overflow: hidden; position: relative; display: flex;
             align-items: center; justify-content: center;
         }
-
         .hero-view img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-view.is-preview img { object-fit: contain; }
+
+        /* FOTO PENDUKUNG 16:9 */
+        .thumb-img-wrapper {
+            width: 100%; aspect-ratio: 16/9; overflow: hidden;
+            border-radius: 12px;
+        }
+        .thumb-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
         .btn-chat-wa {
             background-color: var(--dark) !important;
             color: #ffffff !important;
             display: flex; align-items: center; justify-content: center;
-            gap: 8px; padding: 0.8rem; border-radius: 0.8rem;
+            gap: 8px; padding: 0.8rem; border-radius: 1rem;
             text-align: center; font-weight: 800; font-size: 10px;
             text-transform: uppercase;
-        }
-
-        .kpr-result-box {
-            background-color: var(--dark) !important;
-            padding: 2.5rem; border-radius: 2rem; text-align: center;
-        }
-
-        .kpr-result-value {
-            color: #ffffff !important;
-            font-size: 1.8rem; font-weight: 900; margin-bottom: 2rem; display: block;
         }
 
         .phase-btn {
@@ -139,18 +123,21 @@
         }
         .phase-btn.active { background: var(--dark); color: white !important; }
 
-        .swiper-slide { width: 180px !important; }
+        .swiper-slide { width: 220px !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .quick-tabs { display: flex; gap: 8px; justify-content: center; margin-top: 20px; }
-        .is-transformed .quick-tabs { justify-content: flex-start; margin-top: 10px; }
 
         .tab-btn {
             padding: 8px 15px; background: white; border-radius: 50px; font-size: 9px;
             font-weight: 800; text-transform: uppercase; border: 1px solid #eee;
             display: flex; align-items: center; gap: 5px; color: var(--dark) !important;
         }
+
+        .kpr-result-box {
+            background-color: var(--dark) !important;
+            padding: 2.5rem; border-radius: 2rem; text-align: center;
+        }
+        .kpr-result-value { color: #ffffff !important; font-size: 1.8rem; font-weight: 900; margin-bottom: 2rem; display: block; }
     </style>
 </head>
 <body>
@@ -162,23 +149,22 @@
 
     <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-[2000] flex-col items-center justify-center">
         <button onclick="toggleMenu(false)" class="absolute top-8 right-8 text-2xl"><i class="fa-solid fa-xmark"></i></button>
-        <a href="#top" onclick="toggleMenu(false)" class="text-xl font-black mb-6">BERANDA</a>
-        <a href="#katalog" onclick="toggleMenu(false)" class="text-xl font-black mb-6">KATALOG</a>
-        <a href="#kpr" onclick="toggleMenu(false)" class="text-xl font-black mb-6">HITUNG KPR</a>
+        <a href="#top" onclick="toggleMenu(false)" class="text-xl font-black mb-6 uppercase">Beranda</a>
+        <a href="#katalog" onclick="toggleMenu(false)" class="text-xl font-black mb-6 uppercase">Katalog Unit</a>
+        <a href="#kpr" onclick="toggleMenu(false)" class="text-xl font-black mb-6 uppercase">Simulasi KPR</a>
     </div>
 
-    <!-- Section Profil -->
-    <header id="top" class="w-full">
+    <!-- Section Profil Interaktif -->
+    <header id="top">
         <div id="profile-trigger" class="profile-container">
             <div class="profile-image-wrapper">
                 <img src="wajah.jpg" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x400?text=Echi'">
             </div>
             <div class="profile-text-content">
                 <span class="text-[8px] font-bold text-[#a68966] uppercase tracking-[0.3em] mb-1 block">Property Consultant</span>
-                <h1 class="text-2xl font-black tracking-tighter mb-1 uppercase">Property Consultant |Echi</h1>
-                <p class="text-gray-400 text-[9px] max-w-[250px] leading-tight font-medium">Trusted & Result-Oriented
-Lebih dari sekadar menjual, saya menghadirkan solusi, kepastian, dan nilai investasi terbaik untuk setiap klien.</p>
-                <div class="quick-tabs">
+                <h1 class="text-2xl font-black tracking-tighter mb-1 uppercase">Estate by Echi</h1>
+                <p class="text-gray-400 text-[9px] max-w-[250px] leading-tight font-medium">Spesialis Properti Park Serpong.</p>
+                <div class="flex gap-2 mt-4 justify-center is-transformed:justify-start">
                     <a href="#katalog" class="tab-btn"><i class="fa-solid fa-house"></i> UNIT</a>
                     <a href="#kpr" class="tab-btn"><i class="fa-solid fa-calculator"></i> KPR</a>
                 </div>
@@ -189,15 +175,13 @@ Lebih dari sekadar menjual, saya menghadirkan solusi, kepastian, dan nilai inves
     <!-- Katalog Unit -->
     <section id="katalog" class="py-10 px-4">
         <div class="max-w-4xl mx-auto">
-            <h2 class="section-header-text">Unit Park Serpong</h2>
-            <div class="flex gap-2 overflow-x-auto no-scrollbar mb-6 pb-2 justify-center">
+            <h2 class="text-center font-black uppercase tracking-[0.3em] text-[12px] mb-8">Unit Park Serpong</h2>
+            <div class="flex gap-2 overflow-x-auto no-scrollbar mb-8 pb-2 justify-center">
                 <button onclick="renderUnits(7)" id="btn-7" class="phase-btn active">FASE 07</button>
                 <button onclick="renderUnits(6)" id="btn-6" class="phase-btn">FASE 06</button>
                 <button onclick="renderUnits(5)" id="btn-5" class="phase-btn">FASE 05</button>
             </div>
-            <div id="unit-list" class="block w-full">
-                <!-- Unit akan muncul di sini -->
-            </div>
+            <div id="unit-list"></div>
         </div>
     </section>
 
@@ -220,14 +204,14 @@ Lebih dari sekadar menjual, saya menghadirkan solusi, kepastian, dan nilai inves
                         <input type="number" id="dp-val" value="5" oninput="calc()" class="w-full bg-transparent border-none font-bold text-lg outline-none">
                     </div>
                     <div class="bg-[#fdfbf7] p-4 rounded-2xl border">
-                        <label class="text-[8px] font-bold text-gray-400 uppercase block mb-1">Tenor (Tahun)</label>
+                        <label class="text-[8px] font-bold text-gray-400 uppercase block mb-1">Tenor (Thn)</label>
                         <input type="number" id="tenor-val" value="20" oninput="calc()" class="w-full bg-transparent border-none font-bold text-lg outline-none">
                     </div>
                 </div>
                 <div class="mt-8 kpr-result-box">
                     <p class="text-[9px] font-bold text-gray-400 uppercase mb-3">Estimasi Cicilan</p>
                     <span id="hasil-cicilan" class="kpr-result-value">Rp 2.050.000</span>
-                    <a href="https://wa.me/628111982833" target="_blank" class="block w-full py-4 bg-[#a68966] text-white rounded-xl font-bold text-[10px] uppercase">Konsultasi WA</a>
+                    <a href="https://wa.me/628111982833" target="_blank" class="block w-full py-4 bg-[#a68966] text-white rounded-xl font-bold text-[10px] uppercase">Chat Echi Sekarang</a>
                 </div>
             </div>
         </div>
@@ -239,7 +223,7 @@ Lebih dari sekadar menjual, saya menghadirkan solusi, kepastian, dan nilai inves
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        // Logika Tarik Profil
+        // --- LOGIKA TARIK PROFIL ---
         const trigger = document.getElementById('profile-trigger');
         const header = document.querySelector('header');
         let isDragging = false, startY = 0;
@@ -248,14 +232,12 @@ Lebih dari sekadar menjual, saya menghadirkan solusi, kepastian, dan nilai inves
             isDragging = true;
             startY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
         };
-
         const handleMove = (e) => {
             if (!isDragging) return;
             const currentY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            if (currentY - startY > 50) header.classList.add('is-transformed');
+            if (currentY - startY > 40) header.classList.add('is-transformed');
             else if (currentY - startY < -20) header.classList.remove('is-transformed');
         };
-
         const handleEnd = () => { isDragging = false; };
 
         trigger.addEventListener('mousedown', handleStart);
@@ -266,14 +248,15 @@ Lebih dari sekadar menjual, saya menghadirkan solusi, kepastian, dan nilai inves
         window.addEventListener('touchend', handleEnd);
 
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 60) header.classList.add('is-transformed');
+            if (window.scrollY > 50) header.classList.add('is-transformed');
             else if (!isDragging) header.classList.remove('is-transformed');
         });
 
+        // --- DATA UNIT ---
         const WA_NUMBER = "628111982833";
         const unitData = {
             5: [
-                { name: "Perunggu Livin Tipe B", tag: "305 Jt", val: 305000000, photos: ["unit-1.png", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
+                { name: "Perunggu Livin Tipe B", tag: "305 Jt", val: 305000000, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
                 { name: "Perunggu Livin Tipe BB", tag: "390 Jt", val: 390000000, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
                 { name: "Quartz Livin Tipe Q", tag: "450 Jt", val: 450000000, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
                 { name: "TreeTops Livin Tipe", tag: "520 Jt", val: 520000000, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg", "unit-4.4.jpg"] },
@@ -313,32 +296,42 @@ Lebih dari sekadar menjual, saya menghadirkan solusi, kepastian, dan nilai inves
                 const heroSrc = folder + u.photos[0];
                 const thumbHtml = u.photos.slice(1).map(p => `
                     <div class="swiper-slide" onclick="previewImage('${uid}', '${folder}${p}')">
-                        <img src="${folder}${p}" class="w-full h-full object-cover rounded-lg" onerror="this.src='https://placehold.co/400x300?text=Detail'">
+                        <div class="thumb-img-wrapper">
+                            <img src="${folder}${p}" onerror="this.src='https://placehold.co/600x337?text=Detail'">
+                        </div>
                     </div>
                 `).join('');
 
                 list.innerHTML += `
                     <div class="unit-card">
+                        <!-- Hero Image 1:1 -->
                         <div class="hero-view" id="hero-container-${uid}" onclick="resetHero('${uid}', '${heroSrc}')">
-                            <img id="hero-img-${uid}" src="${heroSrc}" onerror="this.src='https://placehold.co/800x600?text=${u.name}'">
+                            <img id="hero-img-${uid}" src="${heroSrc}" onerror="this.src='https://placehold.co/600x600?text=${u.name}'">
                         </div>
-                        <div class="py-4">
-                            <p class="px-6 text-[7px] font-black text-gray-300 uppercase tracking-widest mb-2">Slide Otomatis</p>
-                            <div class="swiper" id="swiper-${uid}"><div class="swiper-wrapper">${thumbHtml}</div></div>
-                        </div>
-                        <div class="px-6 pb-8">
-                            <h4 class="font-black text-xl uppercase tracking-tighter mb-4">${u.name}</h4>
+                        
+                        <!-- Detail -->
+                        <div class="p-6">
+                            <h4 class="font-black text-2xl uppercase tracking-tighter mb-4">${u.name}</h4>
+                            
+                            <!-- Thumbnail Slider 16:9 -->
+                            <div class="mb-6">
+                                <p class="text-[7px] font-black text-gray-300 uppercase tracking-widest mb-3">Galeri Unit</p>
+                                <div class="swiper" id="swiper-${uid}">
+                                    <div class="swiper-wrapper">${thumbHtml}</div>
+                                </div>
+                            </div>
+
                             <div class="flex flex-col gap-3">
-                                <div class="bg-[#fdfbf7] p-4 rounded-2xl border border-gray-100">
-                                    <p class="text-[7px] font-bold text-gray-400 uppercase">Mulai Dari</p>
-                                    <p class="font-black text-lg text-[#a68966]">Rp ${u.tag}</p>
+                                <div class="bg-[#fdfbf7] p-5 rounded-2xl border border-gray-100 flex justify-between items-center">
+                                    <div>
+                                        <p class="text-[7px] font-bold text-gray-400 uppercase">Harga Mulai</p>
+                                        <p class="font-black text-xl text-[#a68966]">Rp ${u.tag}</p>
+                                    </div>
+                                    <button onclick="setKPR(${u.val})" class="bg-white border px-4 py-2 rounded-xl text-[8px] font-black uppercase">Simulasi</button>
                                 </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <button onclick="setKPR(${u.val})" class="bg-white border py-3 rounded-xl text-[8px] font-black uppercase">Simulasi KPR</button>
-                                    <a href="https://wa.me/${WA_NUMBER}?text=Halo%20Echi,%20info%20unit%20${u.name}" target="_blank" class="btn-chat-wa">
-                                        <i class="fa-brands fa-whatsapp"></i><span>Tanya Echi</span>
-                                    </a>
-                                </div>
+                                <a href="https://wa.me/${WA_NUMBER}?text=Halo%20Echi,%20info%20unit%20${u.name}" target="_blank" class="btn-chat-wa">
+                                    <i class="fa-brands fa-whatsapp"></i><span>Tanya Echi Sekarang</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -348,16 +341,16 @@ Lebih dari sekadar menjual, saya menghadirkan solusi, kepastian, dan nilai inves
             setTimeout(() => { 
                 unitData[fase].forEach((u, i) => {
                     activeSwipers.push(new Swiper(`#swiper-u-${fase}-${i}`, { 
-                        slidesPerView: "auto", spaceBetween: 10, slidesOffsetBefore: 24, slidesOffsetAfter: 24,
-                        loop: true, autoplay: { delay: 3000 }
+                        slidesPerView: "auto", spaceBetween: 12, slidesOffsetBefore: 0, slidesOffsetAfter: 0,
+                        loop: true, autoplay: { delay: 3500, disableOnInteraction: false }
                     }));
                 }); 
             }, 100);
         }
 
         function toggleMenu(s) { document.getElementById('mobile-menu').classList.toggle('hidden', !s); document.getElementById('mobile-menu').classList.toggle('flex', s); }
-        function previewImage(id, src) { document.getElementById(`hero-img-${id}`).src = src; document.getElementById(`hero-container-${id}`).classList.add('is-preview'); }
-        function resetHero(id, src) { document.getElementById(`hero-img-${id}`).src = src; document.getElementById(`hero-container-${id}`).classList.remove('is-preview'); }
+        function previewImage(id, src) { document.getElementById(`hero-img-${id}`).src = src; }
+        function resetHero(id, src) { document.getElementById(`hero-img-${id}`).src = src; }
         function formatRibuan(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function formatAndCalc(el) { let v = el.value.replace(/\D/g, ""); document.getElementById('kpr-raw').value = v; el.value = formatRibuan(v); calc(); }
         function calc() {
