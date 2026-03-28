@@ -15,14 +15,15 @@
         :root {
             --gold: #a68966;
             --dark: #2d241d;
-            --cream: #fdfbf7;
-            /* Warna Coklat Kayu Solid (Elegant Wood) */
-            --wood-base: #8b5a2b; 
+            --cream-bg: #fdfbf7;
+            /* Warna Cream Kartu */
+            --card-cream: #f5f5dc; 
+            --text-muted: #7a7a7a;
         }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: var(--cream); 
+            background-color: var(--cream-bg); 
             color: var(--dark); 
             margin: 0;
             overflow-x: hidden;
@@ -33,7 +34,7 @@
             background: rgba(255, 255, 255, 0.98); 
             backdrop-filter: blur(10px); 
             z-index: 1000; 
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #eee;
         }
 
         /* --- PROFILE SECTION --- */
@@ -56,11 +57,11 @@
             border-radius: 50%;
             overflow: hidden;
             border: 4px solid white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
             margin-bottom: 20px;
             flex-shrink: 0;
-            background: #eee;
+            background: #fff;
         }
 
         .is-transformed .profile-container {
@@ -79,47 +80,51 @@
             margin-right: 20px;
         }
 
-        /* --- UNIT CARD DESIGN: BLENDED WOOD --- */
+        /* --- UNIT CARD DESIGN: CREAM THEME --- */
         .unit-card {
-            background: var(--wood-base); 
+            background: var(--card-cream); 
             border-radius: 2.5rem; 
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+            box-shadow: 0 15px 35px rgba(166, 137, 102, 0.1);
             margin-bottom: 3rem;
-            color: white; 
-            border: 1px solid rgba(255,255,255,0.05);
+            color: var(--dark); 
+            border: 1px solid rgba(166, 137, 102, 0.1);
         }
 
         .hero-view {
             width: 100%; 
             aspect-ratio: 1/1; 
-            /* Warna latar belakang hero harus sama dengan warna kartu agar blend sempurna */
-            background: var(--wood-base); 
+            background: var(--card-cream); 
             overflow: hidden; 
             position: relative; 
             display: flex;
             align-items: center; 
             justify-content: center;
-            transition: aspect-ratio 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .hero-view.is-wide {
             aspect-ratio: 16/9;
+            background: #fff; /* Latar putih saat lihat detail agar akurat */
         }
 
         .hero-view img { 
             width: 100%; 
             height: 100%; 
-            object-fit: contain; /* Contain agar rumah tidak terpotong */
-            /* Multiply membuat background putih gambar hilang, rumah tetap solid */
+            object-fit: contain;
+            /* Default: multiply untuk gambar katalog agar blend dengan cream */
             mix-blend-mode: multiply; 
-            transition: opacity 0.3s ease;
-            filter: brightness(1.05) contrast(1.05); /* Sedikit boost agar rumah lebih menonjol */
+            transition: opacity 0.3s ease, mix-blend-mode 0.3s ease;
+        }
+
+        /* Kelas khusus untuk menghilangkan blend mode */
+        .hero-view.no-blend img {
+            mix-blend-mode: normal !important;
+            object-fit: cover;
         }
 
         .card-content {
             padding: 1.5rem;
-            background: rgba(0,0,0,0.05); /* Sedikit gelap untuk membedakan area konten */
         }
 
         .unit-title {
@@ -128,25 +133,25 @@
             text-transform: uppercase;
             letter-spacing: -0.01em;
             margin-bottom: 1.25rem;
-            color: #ffffff;
+            color: var(--dark);
         }
 
         .thumb-img-wrapper {
             width: 100%; aspect-ratio: 16/9; overflow: hidden;
             border-radius: 12px; cursor: pointer;
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.05);
         }
         .thumb-img-wrapper img { 
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
-            mix-blend-mode: normal; /* Thumbnail tetap normal agar akurat */
+            mix-blend-mode: normal;
         }
 
         .btn-chat-wa {
-            background-color: #ffffff !important;
-            color: var(--wood-base) !important;
+            background-color: var(--dark) !important;
+            color: #fff !important;
             display: flex; align-items: center; justify-content: center;
             gap: 8px; padding: 1rem; border-radius: 1.2rem;
             text-align: center; font-weight: 800; font-size: 11px;
@@ -155,14 +160,14 @@
         }
 
         .price-box {
-            background: rgba(255, 255, 255, 0.1); 
+            background: #fff; 
             padding: 1.25rem; 
             border-radius: 1.5rem; 
             display: flex; 
             justify-content: space-between; 
             align-items: center;
             margin-bottom: 1rem;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(166, 137, 102, 0.1);
         }
 
         .phase-btn {
@@ -331,7 +336,7 @@
                             <h4 class="unit-title">${u.name}</h4>
                             
                             <div class="mb-5">
-                                <p class="text-[7px] font-black text-white/40 uppercase tracking-widest mb-3">Galeri Foto</p>
+                                <p class="text-[7px] font-black text-[#a68966] uppercase tracking-widest mb-3">Galeri Detail</p>
                                 <div class="swiper" id="swiper-${uid}">
                                     <div class="swiper-wrapper">${thumbHtml}</div>
                                 </div>
@@ -339,14 +344,14 @@
 
                             <div class="price-box">
                                 <div>
-                                    <p class="text-[7px] font-bold text-white/40 uppercase">Harga Perkiraan</p>
-                                    <p class="font-black text-xl text-[#ffcc80]">Rp ${u.tag}</p>
+                                    <p class="text-[7px] font-bold text-gray-400 uppercase">Harga Unit</p>
+                                    <p class="font-black text-xl text-[#a68966]">Rp ${u.tag}</p>
                                 </div>
-                                <button onclick="setKPR(${u.val})" class="bg-white/10 border border-white/20 text-white px-3 py-2 rounded-xl text-[8px] font-black uppercase">Simulasi</button>
+                                <button onclick="setKPR(${u.val})" class="bg-gray-100 border text-gray-600 px-3 py-2 rounded-xl text-[8px] font-black uppercase">Simulasi</button>
                             </div>
 
                             <a href="https://wa.me/${WA_NUMBER}?text=Halo%20Echi,%20info%20unit%20${u.name}" target="_blank" class="btn-chat-wa">
-                                <i class="fa-brands fa-whatsapp"></i><span>Chat Echi Sekarang</span>
+                                <i class="fa-brands fa-whatsapp"></i><span>Tanya Brosur</span>
                             </a>
                         </div>
                     </div>
@@ -362,7 +367,6 @@
             }, 100);
         }
 
-        // Script transform profil & menu
         const trigger = document.getElementById('profile-trigger');
         const header = document.querySelector('header');
         let isDragging = false, startY = 0;
@@ -388,22 +392,24 @@
         function previewImage(id, src) { 
             const container = document.getElementById(`hero-container-${id}`);
             const img = document.getElementById(`hero-img-${id}`);
-            container.classList.add('is-wide');
+            container.classList.add('is-wide', 'no-blend'); // Masuk mode detail: Hilangkan blend mode
             img.style.opacity = '0';
             setTimeout(() => { img.src = src; img.style.opacity = '1'; }, 150);
         }
+
         function resetHero(id, src) { 
             const container = document.getElementById(`hero-container-${id}`);
-            const img = document.getElementById|(`hero-img-${id}`);
-            container.classList.remove('is-wide');
+            const img = document.getElementById(`hero-img-${id}`);
+            container.classList.remove('is-wide', 'no-blend'); // Kembali ke katalog: Aktifkan blend mode
             img.style.opacity = '0';
             setTimeout(() => { img.src = src; img.style.opacity = '1'; }, 150);
         }
+
         function toggleMenu(s) { document.getElementById('mobile-menu').classList.toggle('hidden', !s); document.getElementById('mobile-menu').classList.toggle('flex', s); }
         function formatRibuan(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function formatAndCalc(el) { let v = el.value.replace(/\D/g, ""); document.getElementById('kpr-raw').value = v; el.value = formatRibuan(v); calc(); }
         function calc() {
-            const h = parseFloat(document.getElementById('kpr-raw').value) || 0, dp = parseFloat(document.getElementById('dp-val').value) || 0, t = parseFloat(document.getElementById|('tenor-val').value) || 1;
+            const h = parseFloat(document.getElementById('kpr-raw').value) || 0, dp = parseFloat(document.getElementById('dp-val').value) || 0, t = parseFloat(document.getElementById('tenor-val').value) || 1;
             const p = h - (h * dp / 100), b = 0.05 / 12, m = t * 12;
             const c = (p * b) / (1 - Math.pow(1 + b, -m));
             document.getElementById('hasil-cicilan').innerText = "Rp " + formatRibuan(Math.round(c || 0));
