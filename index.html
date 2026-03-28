@@ -84,33 +84,21 @@
             margin-right: 20px;
         }
 
-        /* --- UNIT CARD DESIGN UPDATED --- */
+        /* --- UNIT CARD DESIGN: FULL CREAM & BLEND MODE --- */
         .unit-card {
-            background: white; 
+            background: var(--cream); /* Coklat Cream Sepenuhnya */
             border-radius: 2.5rem; 
             overflow: hidden;
             border: 1px solid #f0ebe3; 
             box-shadow: 0 15px 40px rgba(0,0,0,0.04);
             margin-bottom: 3rem;
-        }
-
-        /* Atas Putih Polos */
-        .card-top {
-            background: #ffffff;
-            padding: 0;
-        }
-
-        /* Bawah Coklat Cream */
-        .card-bottom {
-            background: var(--cream);
-            padding: 1.5rem;
-            border-top: 1px solid #f0ebe3;
+            transition: transform 0.3s ease;
         }
 
         .hero-view {
             width: 100%; 
             aspect-ratio: 1/1; 
-            background: #ffffff; /* Putih Polos */
+            background: transparent;
             overflow: hidden; 
             position: relative; 
             display: flex;
@@ -126,17 +114,28 @@
         .hero-view img { 
             width: 100%; 
             height: 100%; 
-            object-fit: cover; 
+            object-fit: contain; /* Menggunakan contain agar gambar tidak terpotong */
+            mix-blend-mode: multiply; /* Efek Blend agar gambar putih menyatu dengan cream */
             transition: opacity 0.3s ease;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            background: var(--cream);
         }
 
         .thumb-img-wrapper {
             width: 100%; aspect-ratio: 16/9; overflow: hidden;
             border-radius: 12px; cursor: pointer;
             background: #ffffff;
-            border: 1px solid #eee;
+            border: 1px solid #f0ebe3;
         }
-        .thumb-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .thumb-img-wrapper img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            mix-blend-mode: normal; /* Thumbnail tetap normal agar jelas */
+        }
 
         .btn-chat-wa {
             background-color: var(--dark) !important;
@@ -145,7 +144,6 @@
             gap: 8px; padding: 1rem; border-radius: 1.2rem;
             text-align: center; font-weight: 800; font-size: 11px;
             text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(45, 36, 29, 0.2);
         }
 
         .phase-btn {
@@ -170,6 +168,18 @@
             padding: 2.5rem; border-radius: 2rem; text-align: center;
         }
         .kpr-result-value { color: #ffffff !important; font-size: 1.8rem; font-weight: 900; margin-bottom: 2rem; display: block; }
+
+        /* Box Harga di dalam kartu dibuat putih bersih agar kontras */
+        .price-box {
+            background: white; 
+            padding: 1.25rem; 
+            border-radius: 1.5rem; 
+            border: 1px solid #f0ebe3; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
     </style>
 </head>
 <body>
@@ -255,34 +265,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        const trigger = document.getElementById('profile-trigger');
-        const header = document.querySelector('header');
-        let isDragging = false, startY = 0;
-
-        const handleStart = (e) => {
-            isDragging = true;
-            startY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-        };
-        const handleMove = (e) => {
-            if (!isDragging) return;
-            const currentY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            if (currentY - startY > 40) header.classList.add('is-transformed');
-            else if (currentY - startY < -20) header.classList.remove('is-transformed');
-        };
-        const handleEnd = () => { isDragging = false; };
-
-        trigger.addEventListener('mousedown', handleStart);
-        window.addEventListener('mousemove', handleMove);
-        window.addEventListener('mouseup', handleEnd);
-        trigger.addEventListener('touchstart', handleStart, { passive: true });
-        window.addEventListener('touchmove', handleMove, { passive: true });
-        window.addEventListener('touchend', handleEnd);
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) header.classList.add('is-transformed');
-            else if (!isDragging) header.classList.remove('is-transformed');
-        });
-
         const WA_NUMBER = "628111982833";
         const unitData = {
             5: [
@@ -333,15 +315,11 @@
 
                 list.innerHTML += `
                     <div class="unit-card">
-                        <!-- BAGIAN ATAS: PUTIH POLOS -->
-                        <div class="card-top">
-                            <div class="hero-view" id="hero-container-${uid}" onclick="resetHero('${uid}', '${heroSrc}')">
-                                <img id="hero-img-${uid}" src="${heroSrc}" onerror="this.src='https://placehold.co/600x600?text=${u.name}'">
-                            </div>
+                        <div class="hero-view" id="hero-container-${uid}" onclick="resetHero('${uid}', '${heroSrc}')">
+                            <img id="hero-img-${uid}" src="${heroSrc}" onerror="this.src='https://placehold.co/600x600?text=${u.name}'">
                         </div>
                         
-                        <!-- BAGIAN BAWAH: COKLAT CREAM -->
-                        <div class="card-bottom">
+                        <div class="card-content">
                             <h4 class="font-black text-2xl uppercase tracking-tighter mb-4">${u.name}</h4>
                             <div class="mb-6">
                                 <p class="text-[7px] font-black text-gray-400 uppercase tracking-widest mb-3">Galeri Detail</p>
@@ -351,7 +329,7 @@
                             </div>
 
                             <div class="flex flex-col gap-3">
-                                <div class="bg-white p-5 rounded-2xl border border-[#f0ebe3] flex justify-between items-center shadow-sm">
+                                <div class="price-box">
                                     <div>
                                         <p class="text-[7px] font-bold text-gray-400 uppercase">Harga Mulai</p>
                                         <p class="font-black text-xl text-[#a68966]">Rp ${u.tag}</p>
@@ -376,6 +354,29 @@
             }, 100);
         }
 
+        // Script transform profil & menu (sama seperti sebelumnya)
+        const trigger = document.getElementById('profile-trigger');
+        const header = document.querySelector('header');
+        let isDragging = false, startY = 0;
+        const handleStart = (e) => { isDragging = true; startY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY; };
+        const handleMove = (e) => {
+            if (!isDragging) return;
+            const currentY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            if (currentY - startY > 40) header.classList.add('is-transformed');
+            else if (currentY - startY < -20) header.classList.remove('is-transformed');
+        };
+        const handleEnd = () => { isDragging = false; };
+        trigger.addEventListener('mousedown', handleStart);
+        window.addEventListener('mousemove', handleMove);
+        window.addEventListener('mouseup', handleEnd);
+        trigger.addEventListener('touchstart', handleStart, { passive: true });
+        window.addEventListener('touchmove', handleMove, { passive: true });
+        window.addEventListener('touchend', handleEnd);
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) header.classList.add('is-transformed');
+            else if (!isDragging) header.classList.remove('is-transformed');
+        });
+
         function previewImage(id, src) { 
             const container = document.getElementById(`hero-container-${id}`);
             const img = document.getElementById(`hero-img-${id}`);
@@ -383,7 +384,6 @@
             img.style.opacity = '0';
             setTimeout(() => { img.src = src; img.style.opacity = '1'; }, 150);
         }
-
         function resetHero(id, src) { 
             const container = document.getElementById(`hero-container-${id}`);
             const img = document.getElementById(`hero-img-${id}`);
@@ -391,7 +391,6 @@
             img.style.opacity = '0';
             setTimeout(() => { img.src = src; img.style.opacity = '1'; }, 150);
         }
-
         function toggleMenu(s) { document.getElementById('mobile-menu').classList.toggle('hidden', !s); document.getElementById('mobile-menu').classList.toggle('flex', s); }
         function formatRibuan(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function formatAndCalc(el) { let v = el.value.replace(/\D/g, ""); document.getElementById('kpr-raw').value = v; el.value = formatRibuan(v); calc(); }
@@ -402,7 +401,6 @@
             document.getElementById('hasil-cicilan').innerText = "Rp " + formatRibuan(Math.round(c || 0));
         }
         function setKPR(v) { document.getElementById('kpr-raw').value = v; document.getElementById('kpr-disp').value = formatRibuan(v); calc(); document.getElementById('kpr').scrollIntoView({ behavior: 'smooth' }); }
-
         window.onload = () => { renderUnits(7); calc(); };
     </script>
 </body>
