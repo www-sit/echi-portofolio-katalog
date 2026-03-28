@@ -16,6 +16,9 @@
             --gold: #a68966;
             --dark: #2d241d;
             --cream: #fdfbf7;
+            /* Warna Coklat Kayu */
+            --wood-light: #8b5a2b;
+            --wood-dark: #5d3a1a;
         }
 
         body { 
@@ -34,14 +37,7 @@
             border-bottom: 1px solid #f0f0f0;
         }
 
-        /* --- PROFILE DRAG & TRANSFORM --- */
-        #profile-trigger {
-            touch-action: pan-y;
-            cursor: grab;
-            position: relative;
-            z-index: 10;
-        }
-
+        /* --- PROFILE SECTION --- */
         .profile-container {
             transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
             display: flex;
@@ -84,15 +80,17 @@
             margin-right: 20px;
         }
 
-        /* --- UNIT CARD DESIGN: FULL CREAM & BLEND MODE --- */
+        /* --- WOOD TEXTURE UNIT CARD --- */
         .unit-card {
-            background: var(--cream); /* Coklat Cream Sepenuhnya */
+            /* Background Tekstur Kayu Menggunakan Gradient & Grain */
+            background: linear-gradient(135deg, var(--wood-light), var(--wood-dark));
+            background-image: url("https://www.transparenttextures.com/patterns/wood-pattern.png"), linear-gradient(135deg, var(--wood-light), var(--wood-dark));
             border-radius: 2.5rem; 
             overflow: hidden;
-            border: 1px solid #f0ebe3; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.1); 
+            box-shadow: 0 20px 50px rgba(93, 58, 26, 0.25);
             margin-bottom: 3rem;
-            transition: transform 0.3s ease;
+            color: white; /* Text jadi putih agar kontras di kayu */
         }
 
         .hero-view {
@@ -114,36 +112,57 @@
         .hero-view img { 
             width: 100%; 
             height: 100%; 
-            object-fit: contain; /* Menggunakan contain agar gambar tidak terpotong */
-            mix-blend-mode: multiply; /* Efek Blend agar gambar putih menyatu dengan cream */
+            object-fit: contain;
+            /* Multiply pada latar coklat gelap akan membuat gambar terlihat menyatu */
+            mix-blend-mode: screen; /* Menggunakan screen untuk gambar di latar gelap agar putihnya transparan */
             transition: opacity 0.3s ease;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
         }
 
         .card-content {
-            padding: 1.5rem;
-            background: var(--cream);
+            padding: 2rem;
+        }
+
+        .unit-title {
+            font-weight: 900;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .thumb-img-wrapper {
             width: 100%; aspect-ratio: 16/9; overflow: hidden;
             border-radius: 12px; cursor: pointer;
-            background: #ffffff;
-            border: 1px solid #f0ebe3;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
         }
         .thumb-img-wrapper img { 
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
-            mix-blend-mode: normal; /* Thumbnail tetap normal agar jelas */
         }
 
         .btn-chat-wa {
-            background-color: var(--dark) !important;
-            color: #ffffff !important;
+            background-color: white !important;
+            color: var(--wood-dark) !important;
             display: flex; align-items: center; justify-content: center;
-            gap: 8px; padding: 1rem; border-radius: 1.2rem;
-            text-align: center; font-weight: 800; font-size: 11px;
+            gap: 8px; padding: 1.2rem; border-radius: 1.2rem;
+            text-align: center; font-weight: 900; font-size: 12px;
             text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .price-box {
+            background: rgba(0, 0, 0, 0.2); 
+            padding: 1.5rem; 
+            border-radius: 1.5rem; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            margin-top: 1.5rem;
         }
 
         .phase-btn {
@@ -168,18 +187,6 @@
             padding: 2.5rem; border-radius: 2rem; text-align: center;
         }
         .kpr-result-value { color: #ffffff !important; font-size: 1.8rem; font-weight: 900; margin-bottom: 2rem; display: block; }
-
-        /* Box Harga di dalam kartu dibuat putih bersih agar kontras */
-        .price-box {
-            background: white; 
-            padding: 1.25rem; 
-            border-radius: 1.5rem; 
-            border: 1px solid #f0ebe3; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-        }
     </style>
 </head>
 <body>
@@ -320,9 +327,9 @@
                         </div>
                         
                         <div class="card-content">
-                            <h4 class="font-black text-2xl uppercase tracking-tighter mb-4">${u.name}</h4>
+                            <h4 class="unit-title">${u.name}</h4>
                             <div class="mb-6">
-                                <p class="text-[7px] font-black text-gray-400 uppercase tracking-widest mb-3">Galeri Detail</p>
+                                <p class="text-[7px] font-black text-white/50 uppercase tracking-widest mb-3">Galeri Foto</p>
                                 <div class="swiper" id="swiper-${uid}">
                                     <div class="swiper-wrapper">${thumbHtml}</div>
                                 </div>
@@ -331,13 +338,13 @@
                             <div class="flex flex-col gap-3">
                                 <div class="price-box">
                                     <div>
-                                        <p class="text-[7px] font-bold text-gray-400 uppercase">Harga Mulai</p>
-                                        <p class="font-black text-xl text-[#a68966]">Rp ${u.tag}</p>
+                                        <p class="text-[7px] font-bold text-white/50 uppercase">Harga Unit</p>
+                                        <p class="font-black text-xl text-[#ffcc80]">Rp ${u.tag}</p>
                                     </div>
-                                    <button onclick="setKPR(${u.val})" class="bg-transparent border border-[#a68966] text-[#a68966] px-4 py-2 rounded-xl text-[8px] font-black uppercase">Simulasi</button>
+                                    <button onclick="setKPR(${u.val})" class="bg-white/10 border border-white/20 text-white px-4 py-2 rounded-xl text-[8px] font-black uppercase">Simulasi</button>
                                 </div>
                                 <a href="https://wa.me/${WA_NUMBER}?text=Halo%20Echi,%20info%20unit%20${u.name}" target="_blank" class="btn-chat-wa">
-                                    <i class="fa-brands fa-whatsapp"></i><span>Chat Echi Sekarang</span>
+                                    <i class="fa-brands fa-whatsapp"></i><span>Minta Brosur</span>
                                 </a>
                             </div>
                         </div>
@@ -354,7 +361,7 @@
             }, 100);
         }
 
-        // Script transform profil & menu (sama seperti sebelumnya)
+        // Script transform profil
         const trigger = document.getElementById('profile-trigger');
         const header = document.querySelector('header');
         let isDragging = false, startY = 0;
