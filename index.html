@@ -65,6 +65,7 @@
             transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
             margin-bottom: 20px;
             flex-shrink: 0;
+            background: #eee;
         }
 
         .is-transformed .profile-container {
@@ -90,7 +91,6 @@
             margin-bottom: 3rem;
         }
 
-        /* Logic Adaptive 1:1 ke 16:9 */
         .hero-view {
             width: 100%; 
             aspect-ratio: 1/1; 
@@ -172,7 +172,8 @@
     <header id="top">
         <div id="profile-trigger" class="profile-container">
             <div class="profile-image-wrapper">
-                <img src="133129.jpg" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x400?text=Echi'">
+                <!-- Pemanggilan file wajah 133129.jpg -->
+                <img src="133129.jpg" class="w-full h-full object-cover" id="img-wajah" onerror="this.src='https://placehold.co/400x400?text=Echi'">
             </div>
             <div class="profile-text-content">
                 <span class="text-[8px] font-bold text-[#a68966] uppercase tracking-[0.3em] mb-1 block">Property Consultant</span>
@@ -266,7 +267,7 @@
             else if (!isDragging) header.classList.remove('is-transformed');
         });
 
-        // --- DATA UNIT (MENGGUNAKAN NAMA FILE ASLI) ---
+        // --- DATA UNIT (MENGGUNAKAN NAMA FILE ASLI SESUAI PERMINTAAN) ---
         const WA_NUMBER = "628111982833";
         const unitData = {
             5: [
@@ -360,7 +361,7 @@
         function previewImage(id, src) { 
             const container = document.getElementById(`hero-container-${id}`);
             const img = document.getElementById(`hero-img-${id}`);
-            container.classList.add('is-wide'); // Mengubah rasio ke 16:9
+            container.classList.add('is-wide');
             img.style.opacity = '0';
             setTimeout(() => { img.src = src; img.style.opacity = '1'; }, 150);
         }
@@ -368,7 +369,7 @@
         function resetHero(id, src) { 
             const container = document.getElementById(`hero-container-${id}`);
             const img = document.getElementById(`hero-img-${id}`);
-            container.classList.remove('is-wide'); // Kembali ke rasio 1:1
+            container.classList.remove('is-wide');
             img.style.opacity = '0';
             setTimeout(() => { img.src = src; img.style.opacity = '1'; }, 150);
         }
