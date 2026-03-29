@@ -88,6 +88,20 @@
             margin-bottom: 3rem;
         }
 
+        /* --- STYLES UNTUK FOTO YANG DIAM --- */
+        .static-photo-wrapper {
+            width: 160px; /* Ukuran sama dengan slide Swiper */
+            height: 120px; /* Atur tinggi agar seragam */
+            border-radius: 2rem;
+            overflow: hidden;
+            pointer-events: none; /* MEMBUATNYA TIDAK BISA DIKLIK */
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .static-photo-wrapper img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
         .spec-icon { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; color: #8e847b; }
         .phase-btn { padding: 10px 20px; border-radius: 12px; font-size: 11px; font-weight: 800; border: 1px solid #eee; transition: 0.3s; background: white; }
         .phase-btn.active { background: var(--dark); color: white !important; }
@@ -236,7 +250,20 @@
                 const uid = `u-${fase}-${i}`;
                 const folder = `fase-${fase}/`;
                 const mainImg = folder + u.photos[0];
-                const thumbHtml = u.photos.map(p => `
+                
+                // --- PERUBAHAN LOGIKA DI SINI ---
+                // Pisahkan foto pertama dari data slide
+                const otherPhotos = u.photos.slice(1);
+                
+                // Foto pertama (yang dilingkari) ditampilkan mati/statis di sini
+                const staticPhotoHtml = `
+                    <div class="static-photo-wrapper">
+                        <img src="${folder}${u.photos[0]}" onerror="this.src='https://placehold.co/400x300?text=Utama'">
+                    </div>
+                `;
+
+                // Foto-foto sisanya ditampilkan sebagai slide (Swiper)
+                const swiperSlidesHtml = otherPhotos.map(p => `
                     <div class="swiper-slide" onclick="previewImage('${uid}', '${folder}${p}')">
                         <img src="${folder}${p}" class="w-full h-full object-cover rounded-2xl">
                     </div>
@@ -249,7 +276,14 @@
                             <button onclick="resetHero('${uid}', '${mainImg}')" class="btn-back-main">Kembali Ke Foto Utama</button>
                         </div>
                         <div class="py-4">
-                            <div class="swiper px-6" id="sw-${uid}"><div class="swiper-wrapper">${thumbHtml}</div></div>
+                            <div class="flex items-center gap-3 px-6">
+                                ${staticPhotoHtml}
+                                <div class="swiper" id="sw-${uid}" style="width: 100%;">
+                                    <div class="swiper-wrapper">
+                                        ${swiperSlidesHtml}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="px-8 pb-10">
                             <h4 class="font-black text-2xl uppercase tracking-tighter mb-1">${u.name}</h4>
@@ -271,10 +305,7 @@
 
             setTimeout(() => {
                 unitData[fase].forEach((u, i) => {
-                    activeSwipers.push(new Swiper(`#sw-u-${fase}-${i}`, { 
-                        slidesPerView: "auto", spaceBetween: 12, loop: true,
-                        autoplay: { delay: 2500, disableOnInteraction: false }
-                    }));
+                    activeSwipers.push(new Swiper(`#sw-u-${fase}-${i}`, { slidesPerView: "auto", spaceBetween: 12, loop: false }));
                 });
             }, 100);
         }
