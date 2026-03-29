@@ -73,28 +73,31 @@
         }
 
         .hero-view { 
-            width: 100%; aspect-ratio: 16/9; background: #f9f7f4; 
+            width: 100%; aspect-ratio: 16/9; background: #ece8e1; 
             overflow: hidden; position: relative; display: flex; 
             align-items: center; justify-content: center; 
         }
 
-        /* Smooth Transition Animation */
+        /* Foto Utama: contain agar tidak terpotong */
         .hero-view img { 
-            width: 100%; height: 100%; object-fit: cover; 
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            width: 100%; height: 100%; object-fit: contain; 
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         .hero-view.changing img {
             opacity: 0;
-            transform: scale(1.05);
+            transform: scale(0.98);
         }
 
-        .static-photo-wrapper { width: 100px; aspect-ratio: 1/1; overflow: hidden; flex-shrink: 0; cursor: pointer; }
+        .static-photo-wrapper { width: 90px; aspect-ratio: 1/1; overflow: hidden; flex-shrink: 0; cursor: pointer; }
         .static-photo-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         .blend-multiply { mix-blend-mode: multiply; }
 
         .unit-card { background: var(--cream-light); border-radius: 2rem; overflow: hidden; border: 1px solid var(--champagne); display: flex; flex-direction: column; }
         
+        /* Label click to detail */
+        .click-label { font-size: 8px; font-weight: 800; color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; display: block; text-align: center; width: 100%; opacity: 0.8; }
+
         /* Buttons & Tabs */
         .phase-btn { padding: 10px 24px; border-radius: 12px; font-size: 11px; font-weight: 800; border: 1px solid #eee; background: white; transition: 0.3s; }
         .phase-btn.active { background: var(--dark); color: white !important; }
@@ -102,11 +105,11 @@
         .quick-tabs { display: flex; gap: 8px; justify-content: center; margin-top: 20px; }
 
         .btn-back-photo { 
-            position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.9); 
+            position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.95); 
             width: 32px; height: 32px; border-radius: 50%; display: flex; 
             align-items: center; justify-content: center; font-size: 12px; 
             color: var(--dark); opacity: 0; transition: 0.3s; z-index: 10; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .hero-view.is-custom .btn-back-photo { opacity: 1; }
         
@@ -249,23 +252,18 @@
         function changeHero(uid, src) {
             const hero = document.querySelector(`#hero-${uid}`);
             const img = hero.querySelector('img');
-            
-            // Start Fade Out Animation
             hero.classList.add('changing');
-            
             setTimeout(() => {
                 img.src = src;
                 hero.classList.remove('changing');
                 hero.classList.add('is-custom');
-            }, 300); // Harus sinkron dengan durasi CSS transition
+            }, 300);
         }
 
         function resetHero(uid, originalSrc) {
             const hero = document.querySelector(`#hero-${uid}`);
             const img = hero.querySelector('img');
-            
             hero.classList.add('changing');
-            
             setTimeout(() => {
                 img.src = originalSrc;
                 hero.classList.remove('changing');
@@ -290,14 +288,17 @@
                     <div class="unit-card">
                         <div class="hero-view rounded-t-[2rem] overflow-hidden" id="hero-${uid}">
                             <button class="btn-back-photo" onclick="resetHero('${uid}', '${mainImg}')"><i class="fa-solid fa-camera-rotate"></i></button>
-                            <img src="${mainImg}" class="blend-multiply">
+                            <img src="${mainImg}">
                         </div>
-                        <div class="py-6 flex items-center gap-4 px-6 border-b border-gray-50">
-                            <div class="static-photo-wrapper rounded-2xl overflow-hidden" onclick="resetHero('${uid}', '${mainImg}')">
-                                <img src="${mainImg}" class="blend-multiply">
-                            </div>
-                            <div class="swiper swiper-container-custom rounded-2xl overflow-hidden" id="sw-${uid}">
-                                <div class="swiper-wrapper">${slides}</div>
+                        <div class="py-6 px-6 border-b border-gray-50">
+                            <span class="click-label">"click to detail"</span>
+                            <div class="flex items-center gap-4">
+                                <div class="static-photo-wrapper rounded-2xl overflow-hidden" onclick="resetHero('${uid}', '${mainImg}')">
+                                    <img src="${mainImg}" class="blend-multiply">
+                                </div>
+                                <div class="swiper swiper-container-custom rounded-2xl overflow-hidden" id="sw-${uid}">
+                                    <div class="swiper-wrapper">${slides}</div>
+                                </div>
                             </div>
                         </div>
                         <div class="px-8 py-8 flex-grow flex flex-col">
@@ -326,7 +327,7 @@
                     new Swiper(`#sw-u-${fase}-${i}`, { 
                         loop: true, 
                         autoplay: { delay: 2500, disableOnInteraction: false },
-                        slidesPerView: 1,
+                        slidesPerView: 1.2, // Sedikit memperlihatkan slide berikutnya
                         spaceBetween: 10
                     }); 
                 }); 
