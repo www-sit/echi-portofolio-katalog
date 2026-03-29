@@ -34,10 +34,11 @@
         .reveal { opacity: 0; transform: translateY(20px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
+        /* Icon back bulat di kiri bawah foto */
         .btn-reset-profile {
-            position: absolute; top: 110px; right: 20px; width: 40px; height: 40px;
+            position: absolute; bottom: -5px; left: -10px; width: 35px; height: 35px;
             background: var(--dark); border-radius: 50%; display: none; align-items: center; justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); color: white; z-index: 100; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); color: white; z-index: 100; cursor: pointer; font-size: 12px;
         }
         .is-transformed .btn-reset-profile { display: flex; }
 
@@ -85,11 +86,10 @@
             margin-bottom: 20px; flex-shrink: 0; position: relative;
         }
 
-        /* Poin 1: Panah Bawah Animasi */
-        .drag-arrow {
-            position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
-            color: var(--gold); font-size: 16px; animation: bounce 2s infinite;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        /* Panah Bawah Animasi di luar (di bawah foto) */
+        .drag-arrow-outer {
+            position: absolute; bottom: 0px; left: 50%; transform: translateX(-50%);
+            color: var(--gold); font-size: 18px; animation: bounce 2s infinite; z-index: 5;
         }
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
@@ -105,7 +105,7 @@
         /* Transform State (Setelah Drag) */
         .is-transformed .profile-container { flex-direction: row; text-align: left; padding: 115px 25px 30px; }
         .is-transformed .profile-image-wrapper { width: 80px; height: 80px; border-radius: 18px; margin-bottom: 0; margin-right: 20px; }
-        .is-transformed .drag-arrow { display: none; }
+        .is-transformed .drag-arrow-outer { display: none; }
         .is-transformed .sosmed-list { justify-content: flex-start; margin-top: 12px; }
         .is-transformed .profile-desc { margin-left: 0; text-align: left; }
         .is-transformed .quick-tabs { justify-content: flex-start; }
@@ -172,12 +172,17 @@
 
     <header id="top">
         <div id="profile-section">
-            <div class="btn-reset-profile" onclick="resetProfile()"><i class="fa-solid fa-rotate-left"></i></div>
             <div class="profile-container">
-                <div class="profile-image-wrapper">
-                    <img src="wajah.jpg" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x400?text=Echi'">
-                    <i class="fa-solid fa-chevron-down drag-arrow"></i>
+                <div class="relative">
+                    <div class="btn-reset-profile" onclick="resetProfile()"><i class="fa-solid fa-rotate-left"></i></div>
+                    
+                    <div class="profile-image-wrapper">
+                        <img src="wajah.jpg" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x400?text=Echi'">
+                    </div>
+                    
+                    <i class="fa-solid fa-chevron-down drag-arrow-outer"></i>
                 </div>
+
                 <div class="profile-text-content">
                     <span class="text-[9px] font-bold text-[#a68966] uppercase tracking-[0.3em] mb-1 block">Property Consultant</span>
                     <h1 class="text-3xl font-black tracking-tighter mb-1 uppercase">Estate by Echi</h1>
@@ -307,7 +312,7 @@
             distY = 0;
         });
 
-        // Poin 1: Function reset profile
+        // Function reset profile
         function resetProfile() { document.body.classList.remove('is-transformed'); }
 
         // --- UNIT LOGIC ---
@@ -372,7 +377,7 @@
             document.getElementById('hasil-cicilan').innerText = "Rp " + formatRibuan(Math.round(c || 0));
         }
 
-        // Poin 5: Scroll reveal logic
+        // Scroll reveal logic
         window.addEventListener('scroll', () => {
             document.querySelectorAll('.reveal').forEach(el => {
                 if(el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active');
@@ -403,7 +408,6 @@
             document.getElementById('kpr-raw').value = v; 
             document.getElementById('kpr-disp').value = formatRibuan(v); 
             calc(); 
-            // Poin 4: Animasi berpindah saat memencet simulasi
             document.getElementById('kpr').scrollIntoView({ behavior: 'smooth' }); 
         }
 
