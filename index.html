@@ -58,41 +58,41 @@
             background: var(--dark); border-radius: 50%; display: none; align-items: center; justify-content: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2); color: white; z-index: 100; cursor: pointer;
         }
-        .is-transformed .btn-reset-profile { display: flex; animation: fadeIn 0.5s; }
+        .is-transformed .btn-reset-profile { display: flex; }
 
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); } 40% { transform: translateX(-50%) translateY(6px); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Transform Layout Side */
         .is-transformed .profile-container { flex-direction: row; text-align: left; padding: 115px 25px 30px; }
         .is-transformed .profile-image-wrapper { width: 80px; height: 80px; border-radius: 18px; margin-bottom: 0; margin-right: 20px; }
         .is-transformed .drag-arrow { display: none; }
         .is-transformed .sosmed-list { justify-content: flex-start; margin-top: 10px; }
         .is-transformed .quick-tabs { justify-content: flex-start; }
 
-        /* --- REVEAL ANIMATION --- */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* --- UNIT CARD & SWIPER --- */
+        /* --- UNIT CARD (MENYATU) --- */
         .unit-card { background: var(--cream-light); border-radius: 2.2rem; overflow: hidden; border: 1px solid var(--champagne); display: flex; flex-direction: column; }
-        .hero-view { width: 100%; aspect-ratio: 1/1; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); background: #eee; }
-        .hero-view.is-detail { aspect-ratio: 16/9; background: #fff; }
+        
+        /* Foto Utama 1:1 Menyatu */
+        .hero-view { width: 100%; aspect-ratio: 1/1; overflow: hidden; position: relative; background: #eee; }
         .hero-view img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-view.is-detail img { object-fit: contain; }
+        
+        /* Mode Detail 16:9 saat klik foto kecil */
+        .hero-view.is-detail { aspect-ratio: 16/9; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .hero-view.is-detail img { object-fit: cover; }
 
-        .btn-back-photo { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.95); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; z-index: 10; color: var(--dark); font-size: 14px; }
+        .btn-back-photo { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.9); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; z-index: 10; color: var(--dark); }
         .hero-view.is-detail .btn-back-photo { opacity: 1; }
 
-        .static-photo-wrapper { width: 100%; aspect-ratio: 1/1; border-radius: 1.2rem; overflow: hidden; cursor: pointer; border: 1px solid #eee; }
-        .swiper-container-custom { width: 100%; aspect-ratio: 16/9; border-radius: 1.2rem; overflow: hidden; border: 1px solid #eee; }
+        /* Foto Pendukung 16:9 */
+        .photo-strip { padding: 15px; background: white; border-bottom: 1px solid #f0f0f0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .static-photo-wrapper { width: 100%; aspect-ratio: 16/9; border-radius: 1rem; overflow: hidden; cursor: pointer; border: 1px solid #eee; }
+        .swiper-container-custom { width: 100%; aspect-ratio: 16/9; border-radius: 1rem; overflow: hidden; border: 1px solid #eee; }
 
         .phase-btn { padding: 12px 28px; border-radius: 14px; font-size: 11px; font-weight: 800; border: 1px solid #eee; background: white; transition: 0.3s; }
-        .phase-btn.active { background: var(--dark); color: white !important; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .phase-btn.active { background: var(--dark); color: white !important; }
 
-        .tab-btn { padding: 12px 22px; background: white; border-radius: 50px; font-size: 10px; font-weight: 800; border: 1px solid #eee; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
-        .quick-tabs { display: flex; gap: 8px; margin-top: 15px; justify-content: center; }
-
+        .tab-btn { padding: 12px 22px; background: white; border-radius: 50px; font-size: 10px; font-weight: 800; border: 1px solid #eee; display: flex; align-items: center; gap: 8px; }
+        
+        .reveal { opacity: 0; transform: translateY(20px); transition: 0.6s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
@@ -108,6 +108,11 @@
             <a href="#top" onclick="toggleMenu(false)">Home</a>
             <a href="#katalog" onclick="toggleMenu(false)">Unit Catalog</a>
             <a href="#kpr" onclick="toggleMenu(false)">Simulasi KPR</a>
+        </div>
+        <div class="flex gap-6 mt-auto pt-10 border-t border-gray-100">
+            <a href="https://wa.me/628119001899" target="_blank" class="text-2xl"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="https://www.instagram.com/lippokarawaci.id" target="_blank" class="text-2xl"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@parkserponghomes" target="_blank" class="text-2xl"><i class="fa-brands fa-tiktok"></i></a>
         </div>
     </div>
 
@@ -127,11 +132,14 @@
                 <div class="profile-text-content">
                     <span class="text-[9px] font-bold text-[#a68966] uppercase tracking-[0.3em] mb-1 block">Property Consultant</span>
                     <h1 class="text-3xl font-black tracking-tighter mb-1 uppercase">Estate by Echi</h1>
-                    <p class="profile-desc text-gray-500 text-[11px] max-w-[300px] leading-relaxed">Membantu Anda menemukan hunian impian dengan proses transparan di Park Serpong.</p>
-                    <div class="sosmed-list flex gap-5 mt-4 justify-center">
-                        <a href="https://wa.me/628119001899" target="_blank" class="text-xl"><i class="fa-brands fa-whatsapp"></i></a>
-                        <a href="https://www.instagram.com/lippokarawaci.id" target="_blank" class="text-xl"><i class="fa-brands fa-instagram"></i></a>
+                    <p class="profile-desc text-gray-500 text-[11px] max-w-[300px] leading-relaxed">Pilihan hunian cerdas dan modern di Park Serpong.</p>
+                    
+                    <div class="sosmed-list flex gap-6 mt-4 justify-center">
+                        <a href="https://wa.me/628119001899" target="_blank" class="text-xl text-gray-700 hover:text-[#a68966]"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="https://www.instagram.com/lippokarawaci.id" target="_blank" class="text-xl text-gray-700 hover:text-[#a68966]"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@parkserponghomes" target="_blank" class="text-xl text-gray-700 hover:text-[#a68966]"><i class="fa-brands fa-tiktok"></i></a>
                     </div>
+
                     <div class="quick-tabs">
                         <a href="#katalog" class="tab-btn"><i class="fa-solid fa-house"></i> Unit</a>
                         <a href="#kpr" class="tab-btn"><i class="fa-solid fa-calculator"></i> KPR</a>
@@ -141,11 +149,10 @@
         </div>
     </header>
 
-    <section id="katalog" class="py-12 px-6 reveal">
+    <section id="katalog" class="py-12 px-6">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-center font-black text-2xl uppercase tracking-tighter mb-2">Unit Park Serpong</h2>
-            <p class="text-center text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-10">Pilihan Hunian Terbaik</p>
-            <div class="flex gap-3 overflow-x-auto no-scrollbar mb-10 pb-2 justify-center">
+            <h2 class="text-center font-black text-2xl uppercase tracking-tighter mb-10">Unit Park Serpong</h2>
+            <div class="flex gap-3 overflow-x-auto no-scrollbar mb-10 justify-center">
                 <button onclick="renderUnits(7)" id="btn-7" class="phase-btn active">FASE 07</button>
                 <button onclick="renderUnits(6)" id="btn-6" class="phase-btn">FASE 06</button>
                 <button onclick="renderUnits(5)" id="btn-5" class="phase-btn">FASE 05</button>
@@ -155,33 +162,21 @@
     </section>
 
     <section id="kpr" class="py-20 px-6 bg-white border-t reveal">
-        <div class="max-w-4xl mx-auto">
-            <h3 class="text-center font-black uppercase text-[#a68966] mb-12 tracking-[0.3em] text-[10px]">Simulasi Angsuran</h3>
-            <div class="grid md:grid-cols-2 gap-10 items-center">
-                <div class="space-y-5">
-                    <div class="bg-[#fdfcf9] p-8 rounded-[2rem] border border-[#f0ebe3]">
-                        <label class="text-[9px] font-bold text-gray-400 uppercase block mb-3">Harga Unit</label>
-                        <div class="flex items-center">
-                            <span class="text-gray-300 font-bold mr-3 text-2xl">Rp</span>
-                            <input type="text" id="kpr-disp" value="325.000.000" oninput="formatAndCalc(this)" class="w-full bg-transparent border-none outline-none text-3xl font-black tracking-tighter">
-                        </div>
-                        <input type="hidden" id="kpr-raw" value="325000000">
+        <div class="max-w-4xl mx-auto text-center">
+            <h3 class="font-black uppercase text-[#a68966] mb-12 text-[10px] tracking-[0.3em]">Simulasi Angsuran</h3>
+            <div class="grid md:grid-cols-2 gap-10 text-left">
+                <div class="bg-[#fdfcf9] p-8 rounded-[2rem] border border-[#f0ebe3]">
+                    <label class="text-[9px] font-bold text-gray-400 block mb-3">HARGA PROPERTI</label>
+                    <div class="flex items-center">
+                        <span class="text-gray-300 font-bold mr-3 text-2xl">Rp</span>
+                        <input type="text" id="kpr-disp" value="325.000.000" oninput="formatAndCalc(this)" class="w-full bg-transparent border-none outline-none text-3xl font-black">
                     </div>
-                    <div class="grid grid-cols-2 gap-5">
-                        <div class="bg-[#fdfcf9] p-6 rounded-2xl border border-[#f0ebe3]">
-                            <label class="text-[9px] font-bold text-gray-400 block mb-1">DP (%)</label>
-                            <input type="number" id="dp-val" value="5" oninput="calc()" class="w-full bg-transparent border-none font-black text-xl outline-none">
-                        </div>
-                        <div class="bg-[#fdfcf9] p-6 rounded-2xl border border-[#f0ebe3]">
-                            <label class="text-[9px] font-bold text-gray-400 block mb-1">Tenor (Thn)</label>
-                            <input type="number" id="tenor-val" value="20" oninput="calc()" class="w-full bg-transparent border-none font-black text-xl outline-none">
-                        </div>
-                    </div>
+                    <input type="hidden" id="kpr-raw" value="325000000">
                 </div>
-                <div class="bg-[#2d241d] p-12 rounded-[3rem] text-center text-white shadow-2xl">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-4 tracking-widest">Estimasi Cicilan</p>
-                    <span id="hasil-cicilan" class="text-4xl font-black block mb-10 tracking-tighter">Rp 2.050.000</span>
-                    <button onclick="sendToWA()" class="w-full py-5 bg-[#a68966] rounded-2xl font-black text-[11px] uppercase tracking-widest">Konsultasi WA</button>
+                <div class="bg-[#2d241d] p-10 rounded-[3rem] text-center text-white">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-4">Estimasi / Bulan</p>
+                    <span id="hasil-cicilan" class="text-4xl font-black block mb-10">Rp 2.050.000</span>
+                    <button onclick="sendToWA()" class="w-full py-5 bg-[#a68966] rounded-2xl font-black text-[11px] uppercase tracking-widest active:scale-95 transition">Konsultasi WA</button>
                 </div>
             </div>
         </div>
@@ -192,7 +187,7 @@
         const WA_NUMBER = "628119001899";
         let selectedUnitName = "General Park Serpong";
 
-        // --- PROFILE INTERACTION ---
+        // --- PROFILE DRAG ---
         const profileSect = document.getElementById('profile-section');
         const container = document.querySelector('.profile-container');
         let startY = 0, isDragging = false;
@@ -201,35 +196,22 @@
         profileSect.addEventListener('pointerup', (e) => { if(isDragging) { isDragging = false; if(e.clientY - startY > 80) document.body.classList.add('is-transformed'); container.style.transform = ''; } });
         function resetProfile() { document.body.classList.remove('is-transformed'); }
 
-        // --- REVEAL ANIMATION ---
-        function handleReveal() {
-            document.querySelectorAll('.reveal').forEach(el => {
-                if(el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active');
-            });
-        }
-        window.addEventListener('scroll', handleReveal);
-
-        // --- DATA UNIT LENGKAP (UTUH) ---
+        // --- DATA UNIT LENGKAP ---
         const unitData = {
             7: [
-                { name: "Perunggu Beverly Livin", tag: "325 Jt", val: 325000000, desc: "Hunian modern Beverly Hills di Serpong.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg"] },
-                { name: "Silver Beverly Livin", tag: "410 Jt", val: 410000000, desc: "Sentuhan mewah untuk keluarga muda.", bed: 2, bath: 2, floor: 2, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg"] },
-                { name: "Urban Beverly Livin", tag: "500 Jt", val: 500000000, desc: "Desain perkotaan dinamis dan berkelas.", bed: 3, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg"] },
-                { name: "TreeTops Beverly Livin", tag: "550 Jt", val: 550000000, desc: "Pemandangan asri dari ketinggian.", bed: 3, bath: 3, floor: 2, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg"] },
-                { name: "Gold Beverly Livin", tag: "610 Jt", val: 610000000, desc: "Simbol kemewahan sejati.", bed: 3, bath: 3, floor: 2, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg"] },
-                { name: "GoldTops Beverly Livin", tag: "690 Jt", val: 690000000, desc: "Unit paling eksklusif terlengkap.", bed: 4, bath: 4, floor: 2, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg"] }
+                { name: "Perunggu Beverly Livin", tag: "325 Jt", val: 325000000, desc: "Modern Beverly Hills Serpong.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg"] },
+                { name: "Silver Beverly Livin", tag: "410 Jt", val: 410000000, desc: "Mewah untuk keluarga muda.", bed: 2, bath: 2, floor: 2, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg"] },
+                { name: "Gold Beverly Livin", tag: "610 Jt", val: 610000000, desc: "Simbol kemewahan sejati.", bed: 3, bath: 3, floor: 2, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg"] }
             ],
             6: [
-                { name: "Perunggu Livin Tipe B", tag: "315 Jt", val: 315000000, desc: "Hunian compact fungsional praktis.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg"] },
+                { name: "Perunggu Livin Tipe B", tag: "315 Jt", val: 315000000, desc: "Hunian compact fungsional.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg"] },
                 { name: "Quartz Livin Tipe Q", tag: "460 Jt", val: 460000000, desc: "Elegan minimalis masa depan.", bed: 2, bath: 2, floor: 2, photos: ["unit-2.jpg", "unit-2.1.jpg"] },
-                { name: "TreeTops Livin", tag: "530 Jt", val: 530000000, desc: "Harmoni modern dengan alam.", bed: 3, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg"] },
-                { name: "Gold Livin Tipe G", tag: "595 Jt", val: 595000000, desc: "Ruang keluarga luas dan hangat.", bed: 3, bath: 3, floor: 2, photos: ["unit-4.jpg", "unit-4.1.jpg"] },
-                { name: "GoldTops Livin Type GT", tag: "670 Jt", val: 670000000, desc: "Desain fasad menawan fase 06.", bed: 4, bath: 4, floor: 2, photos: ["unit-5.jpg", "unit-5.1.jpg"] }
+                { name: "GoldTops Livin Type GT", tag: "670 Jt", val: 670000000, desc: "Fasad menawan fase 06.", bed: 4, bath: 4, floor: 2, photos: ["unit-5.jpg", "unit-5.1.jpg"] }
             ],
             5: [
                 { name: "Perunggu Livin Tipe B", tag: "305 Jt", val: 305000000, desc: "Kualitas premium harga terjangkau.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg"] },
-                { name: "Quartz Livin Tipe Q", tag: "450 Jt", val: 450000000, desc: "Modernitas dalam ketenangan.", bed: 2, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg"] },
                 { name: "Silver Livin Tipe S", tag: "490 Jt", val: 490000000, desc: "Hunian ideal keluarga harmonis.", bed: 3, bath: 2, floor: 2, photos: ["unit-2.jpg", "unit-2.1.jpg"] },
+                { name: "Quartz Livin Tipe Q", tag: "450 Jt", val: 450000000, desc: "Modernitas dalam ketenangan.", bed: 2, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg"] },
                 { name: "Gold Livin Tipe G", tag: "580 Jt", val: 580000000, desc: "Ruang luas untuk kenyamanan ekstra.", bed: 3, bath: 3, floor: 2, photos: ["unit-4.jpg", "unit-4.1.jpg"] },
                 { name: "GoldTops Livin Type GT", tag: "650 Jt", val: 650000000, desc: "Puncak estetika hunian modern.", bed: 4, bath: 3, floor: 2, photos: ["unit-6.jpg", "unit-6.1.jpg"] }
             ]
@@ -238,27 +220,33 @@
         function renderUnits(fase) {
             const list = document.getElementById('unit-list'); list.innerHTML = '';
             document.querySelectorAll('.phase-btn').forEach(b => b.classList.toggle('active', b.id === `btn-${fase}`));
+            
             unitData[fase].forEach((u, i) => {
                 const uid = `u-${fase}-${i}`; const mainImg = `fase-${fase}/` + u.photos[0];
-                const slides = u.photos.slice(1).map(p => `<div class="swiper-slide" onclick="showDetailPhoto('${uid}', 'fase-${fase}/${p}')"><img src="fase-${fase}/${p}"></div>`).join('');
+                const slides = u.photos.slice(1).map(p => `<div class="swiper-slide" onclick="showDetailPhoto('${uid}', 'fase-${fase}/${p}')"><img src="fase-${fase}/${p}" class="w-full h-full object-cover"></div>`).join('');
+                
                 list.innerHTML += `
                     <div class="unit-card reveal active">
-                        <div class="hero-view" id="hero-${uid}"><button class="btn-back-photo" onclick="resetToMain('${uid}', '${mainImg}')"><i class="fa-solid fa-camera-rotate"></i></button><img src="${mainImg}"></div>
-                        <div class="p-4 bg-white border-b border-gray-50 flex gap-3">
-                            <div class="static-photo-wrapper w-1/2" onclick="resetToMain('${uid}', '${mainImg}')"><img src="${mainImg}" class="w-full h-full object-cover"></div>
-                            <div class="swiper swiper-container-custom w-1/2" id="sw-${uid}"><div class="swiper-wrapper">${slides}</div></div>
+                        <div class="hero-view" id="hero-${uid}">
+                            <button class="btn-back-photo" onclick="resetToMain('${uid}', '${mainImg}')"><i class="fa-solid fa-camera-rotate"></i></button>
+                            <img src="${mainImg}">
                         </div>
+                        
+                        <div class="photo-strip">
+                            <div class="static-photo-wrapper" onclick="resetToMain('${uid}', '${mainImg}')"><img src="${mainImg}" class="w-full h-full object-cover"></div>
+                            <div class="swiper swiper-container-custom" id="sw-${uid}"><div class="swiper-wrapper">${slides}</div></div>
+                        </div>
+
                         <div class="p-8 flex-grow flex flex-col">
                             <h4 class="font-black text-xl uppercase mb-2">${u.name}</h4>
-                            <p class="text-[10px] text-gray-500 mb-5">${u.desc}</p>
-                            <p class="font-black text-2xl text-[#a68966] mb-8">Rp ${u.tag}</p>
-                            <div class="flex gap-5 mb-8 pb-6 border-b border-gray-100">
-                                <div class="text-[10px] font-bold text-gray-400 flex items-center gap-1.5"><i class="fa-solid fa-bed text-gray-300"></i> ${u.bed} BR</div>
-                                <div class="text-[10px] font-bold text-gray-400 flex items-center gap-1.5"><i class="fa-solid fa-bath text-gray-300"></i> ${u.bath} BA</div>
-                                <div class="text-[10px] font-bold text-gray-400 flex items-center gap-1.5"><i class="fa-solid fa-layer-group text-gray-300"></i> ${u.floor} Lantai</div>
+                            <p class="text-[10px] text-gray-500 mb-6">${u.desc}</p>
+                            <div class="flex gap-4 mb-8 text-[10px] font-bold text-gray-400 border-b border-gray-100 pb-6">
+                                <span><i class="fa-solid fa-bed text-[#a68966]"></i> ${u.bed} BR</span>
+                                <span><i class="fa-solid fa-bath text-[#a68966]"></i> ${u.bath} BA</span>
+                                <span><i class="fa-solid fa-layer-group text-[#a68966]"></i> ${u.floor} Lantai</span>
                             </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <button onclick="setKPR('${u.name}', ${u.val})" class="border py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest">Simulasi</button>
+                            <div class="mt-auto grid grid-cols-2 gap-4">
+                                <button onclick="setKPR('${u.name}', ${u.val})" class="py-4 border rounded-2xl text-[10px] font-black uppercase tracking-widest">Simulasi</button>
                                 <a href="https://wa.me/${WA_NUMBER}?text=Halo Echi, info unit ${u.name}" target="_blank" class="bg-[#2d241d] text-white flex items-center justify-center rounded-2xl text-[10px] font-black uppercase">Chat WA</a>
                             </div>
                         </div>
@@ -273,8 +261,7 @@
         function formatRibuan(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function formatAndCalc(el) { let v = el.value.replace(/\D/g, ""); document.getElementById('kpr-raw').value = v; el.value = formatRibuan(v); calc(); }
         function calc() {
-            const h = parseFloat(document.getElementById('kpr-raw').value) || 0; const dp = parseFloat(document.getElementById('dp-val').value) || 5;
-            const t = parseFloat(document.getElementById('tenor-val').value) || 20; const p = h - (h * dp / 100); const r = 0.055 / 12; const n = t * 12;
+            const h = parseFloat(document.getElementById('kpr-raw').value) || 0; const p = h - (h * 0.05); const r = 0.055 / 12; const n = 240;
             const c = (p * r) / (1 - Math.pow(1 + r, -n));
             document.getElementById('hasil-cicilan').innerText = "Rp " + formatRibuan(Math.round(c || 0));
         }
@@ -282,10 +269,18 @@
         function toggleMenu(s) { document.getElementById('mobile-menu').classList.toggle('active', s); document.getElementById('overlay').style.display = s ? 'block' : 'none'; }
         function sendToWA() {
             const harga = document.getElementById('kpr-disp').value; const cicilan = document.getElementById('hasil-cicilan').innerText;
-            const text = `Halo Echi, saya tertarik unit *${selectedUnitName}* harga Rp ${harga}. Cicilan ${cicilan}. Mohon infonya.`;
+            const text = `Halo Echi, tertarik *${selectedUnitName}* harga Rp ${harga}. Cicilan ${cicilan}.`;
             window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
         }
-        window.onload = () => { renderUnits(7); calc(); handleReveal(); };
+
+        // --- REVEAL ON SCROLL ---
+        window.addEventListener('scroll', () => {
+            document.querySelectorAll('.reveal').forEach(el => {
+                if(el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active');
+            });
+        });
+
+        window.onload = () => { renderUnits(7); calc(); };
     </script>
 </body>
 </html>
