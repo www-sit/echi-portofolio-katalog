@@ -50,11 +50,11 @@
         .is-transformed .profile-container { flex-direction: row; text-align: left; padding: 110px 25px 30px; }
         .is-transformed .profile-image-wrapper { width: 90px; height: 90px; border-radius: 20px; margin-bottom: 0; margin-right: 20px; }
 
-        /* --- DYNAMIC UNIT VIEW (CORE LOGIC) --- */
+        /* --- PERBAIKAN AREA MERAH (UNIT UTAMA) --- */
         .hero-view { 
             width: 100%; 
             aspect-ratio: 1/1; 
-            background: #ece8e1; 
+            background: transparent; /* Menghilangkan rongga/background sisa */
             overflow: hidden; 
             position: relative; 
             display: flex; 
@@ -64,24 +64,26 @@
             border-radius: 2rem 2rem 0 0;
         }
 
-        /* Aktifkan mode 16:9 saat foto pendukung diklik */
         .hero-view.is-detail { aspect-ratio: 16/9; }
 
         .hero-view img { 
-            width: 100%; height: 100%; 
-            object-fit: cover; 
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; /* Default penuh tanpa rongga */
+            transition: opacity 0.3s ease;
         }
 
-        /* Pastikan bangunan utuh saat mode detail */
-        .hero-view.is-detail img { object-fit: contain; padding: 12px; }
+        .hero-view.is-detail img { 
+            object-fit: contain; /* Saat 16:9 gambar terlihat utuh */
+            background: #000; /* Opsional: background hitam tipis jika foto terlalu portrait */
+        }
 
-        .hero-view.changing img { opacity: 0; transform: scale(0.96); }
-
-        /* --- SUPPORTING PHOTOS (Fixed 1:1) --- */
+        /* --- PERBAIKAN AREA KUNING (UNIT PENDUKUNG 16:9) --- */
         .static-photo-wrapper, .swiper-container-custom { 
-            width: 100%; aspect-ratio: 1/1; 
-            border-radius: 1.5rem; overflow: hidden; 
+            width: 100%; 
+            aspect-ratio: 16/9; /* Sesuai permintaan garis kuning */
+            border-radius: 1rem; 
+            overflow: hidden; 
         }
         .static-photo-wrapper img, .swiper-slide img { 
             width: 100%; height: 100%; object-fit: cover; cursor: pointer;
@@ -95,7 +97,6 @@
             width: 32px; height: 32px; border-radius: 50%; display: flex; 
             align-items: center; justify-content: center; font-size: 12px; 
             color: var(--dark); opacity: 0; transition: 0.3s; z-index: 10; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .hero-view.is-detail .btn-back-photo { opacity: 1; }
 
@@ -104,7 +105,6 @@
 
         .sosmed-profile { display: flex; gap: 15px; margin-top: 15px; }
         .sosmed-profile a { font-size: 18px; color: var(--dark); }
-
         .tab-btn { padding: 10px 20px; background: white; border-radius: 50px; font-size: 10px; font-weight: 800; border: 1px solid #eee; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         .quick-tabs { display: flex; gap: 8px; margin-top: 20px; }
     </style>
@@ -248,7 +248,7 @@
                 const mainImg = `fase-${fase}/` + u.photos[0];
                 const slides = u.photos.slice(1).map(p => `
                     <div class="swiper-slide" onclick="showDetailPhoto('${uid}', 'fase-${fase}/${p}')">
-                        <img src="fase-${fase}/${p}" onerror="this.src='https://placehold.co/400x400?text=Detail'">
+                        <img src="fase-${fase}/${p}" onerror="this.src='https://placehold.co/160x90?text=Detail'">
                     </div>`).join('');
                 
                 list.innerHTML += `
@@ -303,7 +303,6 @@
             else document.body.classList.remove('is-transformed');
         });
 
-        function toggleMenu(s) { /* Logic Menu Mobile */ }
         function formatRibuan(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function formatAndCalc(el) { let v = el.value.replace(/\D/g, ""); document.getElementById('kpr-raw').value = v; el.value = formatRibuan(v); calc(); }
         function calc() {
