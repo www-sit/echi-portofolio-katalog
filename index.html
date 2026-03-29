@@ -47,7 +47,6 @@
             position: relative;
         }
         
-        /* Arrow Indicator */
         .scroll-indicator {
             font-size: 12px; color: var(--gold); margin-bottom: 15px;
             animation: bounce 2s infinite;
@@ -78,7 +77,7 @@
         .hero-view {
             width: 100%; aspect-ratio: 1/1; background: #f9f7f4; overflow: hidden; position: relative;
             display: flex; align-items: center; justify-content: center; transition: all 0.4s ease;
-            pointer-events: none; /* Kunci gambar utama */
+            pointer-events: none;
         }
         .hero-view.is-preview { aspect-ratio: 16/9; background: #1a1a1a; pointer-events: auto; }
         .hero-view img { width: 100%; height: 100%; object-fit: cover; }
@@ -128,7 +127,6 @@
                 <span class="text-[8px] font-bold text-[#a68966] uppercase tracking-[0.3em] mb-1 block">Property Consultant</span>
                 <h1 class="text-2xl font-black tracking-tighter mb-1 uppercase">Estate by Echi</h1>
                 <p class="text-gray-400 text-[9px] max-w-[250px] leading-tight font-medium">Membantu Anda menemukan hunian impian di Park Serpong.</p>
-                
                 <div class="quick-tabs">
                     <a href="#katalog" class="tab-btn"><i class="fa-solid fa-house"></i> Unit</a>
                     <a href="#kpr" class="tab-btn"><i class="fa-solid fa-calculator"></i> KPR</a>
@@ -139,9 +137,7 @@
 
     <section id="katalog" class="py-10 px-4">
         <div class="max-w-4xl mx-auto text-center">
-            
             <h2 class="text-[12px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-4">Unit Park Serpong</h2>
-            
             <div class="flex gap-2 overflow-x-auto no-scrollbar mb-8 pb-2 justify-center">
                 <button onclick="renderUnits(7)" id="btn-7" class="phase-btn active">FASE 07</button>
                 <button onclick="renderUnits(6)" id="btn-6" class="phase-btn">FASE 06</button>
@@ -190,48 +186,34 @@
     <script>
         const WA_NUMBER = "628111982833";
 
-        // Logic Animasi Profil yang Diperbaiki (Lebih halus di HP)
-        let isDragging = false;
-        let startY = 0;
-
-        window.addEventListener('touchstart', (e) => {
-            if (window.scrollY < 10) { // Hanya aktif saat di paling atas
-                isDragging = true;
-                startY = e.touches[0].clientY;
-            }
-        }, { passive: true });
-
-        window.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const currentY = e.touches[0].clientY;
-            
-            // Sensitivitas drag: tarik ke bawah sejauh 30px
-            if (currentY - startY > 30) {
-                document.body.classList.add('is-transformed');
-                isDragging = false; // Matikan drag setelah trigger
-            }
-        }, { passive: true });
-
-        window.addEventListener('touchend', () => isDragging = false);
-
         window.addEventListener('scroll', () => {
-            // Sensitivitas scroll: scroll ke bawah sejauh 40px
             if (window.scrollY > 40) document.body.classList.add('is-transformed');
-            else if (window.scrollY <= 10 && !isDragging) document.body.classList.remove('is-transformed');
-        }, { passive: true });
+            else document.body.classList.remove('is-transformed');
+        });
 
         const unitData = {
             7: [
                 { name: "Perunggu Beverly Livin", tag: "325 Jt", val: 325000000, desc: "Gaya Beverly Hills di Serpong.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
                 { name: "Silver Beverly Livin", tag: "410 Jt", val: 410000000, desc: "Sentuhan mewah modern.", bed: 2, bath: 2, floor: 2, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
-                { name: "Gold Beverly Livin", tag: "610 Jt", val: 610000000, desc: "Desain ikonik dan berkelas.", bed: 3, bath: 3, floor: 2, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"] }
+                { name: "Urban Beverly Livin", tag: "500 Jt", val: 500000000, desc: "Gaya hidup perkotaan dinamis.", bed: 3, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
+                { name: "TreeTops Beverly Livin", tag: "550 Jt", val: 550000000, desc: "View terbaik dari lantai dua.", bed: 3, bath: 3, floor: 2, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"] },
+                { name: "Gold Beverly Livin", tag: "610 Jt", val: 610000000, desc: "Desain ikonik dan berkelas.", bed: 3, bath: 3, floor: 2, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"] },
+                { name: "GoldTops Beverly Livin", tag: "690 Jt", val: 690000000, desc: "Unit terbaik di kelasnya.", bed: 4, bath: 4, floor: 2, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"] }
             ],
             6: [
                 { name: "Perunggu Livin Tipe B", tag: "315 Jt", val: 315000000, desc: "Modern compact living.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
+                { name: "Quartz Livin Tipe Q", tag: "460 Jt", val: 460000000, desc: "Desain elegan fungsional.", bed: 2, bath: 2, floor: 2, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
+                { name: "TreeTops Livin", tag: "530 Jt", val: 530000000, desc: "Keseimbangan dengan alam.", bed: 3, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
+                { name: "Gold Livin Tipe G", tag: "595 Jt", val: 595000000, desc: "Ruang tamu luas & lega.", bed: 3, bath: 3, floor: 2, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"] },
                 { name: "GoldTops Livin Type GT", tag: "670 Jt", val: 670000000, desc: "Simbol kemapanan keluarga.", bed: 4, bath: 4, floor: 2, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"] }
             ],
             5: [
-                { name: "Perunggu Livin Tipe B", tag: "305 Jt", val: 305000000, desc: "Hunian nyaman harga terjangkau.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] }
+                { name: "Perunggu Livin Tipe B", tag: "305 Jt", val: 305000000, desc: "Hunian nyaman harga terjangkau.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
+                { name: "Perunggu Livin Tipe BB", tag: "390 Jt", val: 390000000, desc: "Tipe favorit keluarga muda.", bed: 2, bath: 2, floor: 1, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
+                { name: "Quartz Livin Tipe Q", tag: "450 Jt", val: 450000000, desc: "Modern dan minimalis.", bed: 2, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
+                { name: "TreeTops Livin Tipe", tag: "520 Jt", val: 520000000, desc: "Suasana asri nan hijau.", bed: 3, bath: 2, floor: 2, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"] },
+                { name: "Gold Livin Tipe G", tag: "580 Jt", val: 580000000, desc: "Kemewahan di setiap sudut.", bed: 3, bath: 3, floor: 2, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"] },
+                { name: "GoldTops Livin Type GT", tag: "650 Jt", val: 650000000, desc: "Eksklusivitas tanpa batas.", bed: 4, bath: 3, floor: 2, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"] }
             ]
         };
 
@@ -242,14 +224,12 @@
             list.innerHTML = '';
             activeSwipers.forEach(s => s.destroy());
             activeSwipers = [];
-
             document.querySelectorAll('.phase-btn').forEach(b => b.classList.toggle('active', b.id === `btn-${fase}`));
 
             unitData[fase].forEach((u, i) => {
                 const uid = `u-${fase}-${i}`;
                 const mainImg = `fase-${fase}/` + u.photos[0];
                 const otherPhotos = u.photos.slice(1);
-                
                 const slides = otherPhotos.map(p => `<div class="swiper-slide" onclick="previewImage('${uid}', 'fase-${fase}/${p}')"><img src="fase-${fase}/${p}" class="w-full h-full object-cover"></div>`).join('');
 
                 list.innerHTML += `
@@ -268,12 +248,15 @@
                             <h4 class="font-black text-2xl uppercase tracking-tighter mb-1">${u.name}</h4>
                             <p class="font-bold text-lg text-[#a68966] mb-4">Rp ${u.tag}</p>
                             <div class="flex gap-4 mb-6 border-b border-gray-100 pb-4">
-                                <div class="text-[10px] font-bold"><i class="fa-solid fa-bed"></i> ${u.bed} BR</div>
-                                <div class="text-[10px] font-bold"><i class="fa-solid fa-bath"></i> ${u.bath} BA</div>
+                                <div class="text-[10px] font-bold text-gray-400"><i class="fa-solid fa-bed"></i> ${u.bed} BR</div>
+                                <div class="text-[10px] font-bold text-gray-400"><i class="fa-solid fa-bath"></i> ${u.bath} BA</div>
+                                <div class="text-[10px] font-bold text-gray-400"><i class="fa-solid fa-stairs"></i> ${u.floor} LT</div>
                             </div>
                             <div class="grid grid-cols-2 gap-3">
-                                <button onclick="setKPR(${u.val})" class="bg-white border py-4 rounded-2xl text-[9px] font-black uppercase tracking-widest transition hover:bg-[#f9f7f4]">Simulasi</button>
-                                <a href="https://wa.me/${WA_NUMBER}?text=Info%20${u.name}" class="bg-[#2d241d] text-white flex items-center justify-center gap-2 rounded-2xl text-[9px] font-black uppercase tracking-widest">Chat Echi</a>
+                                <button onclick="setKPR(${u.val})" class="bg-white border py-4 rounded-2xl text-[9px] font-black uppercase tracking-widest">Simulasi</button>
+                                <a href="https://wa.me/${WA_NUMBER}?text=Halo%20Echi,%20saya%20tertarik%20unit%20${u.name}" target="_blank" class="bg-[#2d241d] text-white flex items-center justify-center gap-2 rounded-2xl text-[9px] font-black uppercase tracking-widest">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i> Chat Echi
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -318,7 +301,7 @@
             document.getElementById('kpr-raw').value = v; 
             document.getElementById('kpr-disp').value = formatRibuan(v); 
             calc(); 
-            document.getElementById('kpr').scrollIntoView(); 
+            document.getElementById('kpr').scrollIntoView({ behavior: 'smooth' }); 
         }
 
         window.onload = () => { renderUnits(7); calc(); };
