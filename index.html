@@ -230,7 +230,12 @@
         </div>
         <div class="about-desc-section">
             <h3 class="text-white font-black uppercase text-[10px] tracking-[0.3em] mb-4">Profil Profesional</h3>
-            <p>Sebagai konsultan properti berdedikasi, misi saya adalah memberikan solusi hunian cerdas dan transparan di kawasan Park Serpong. Saya siap mendampingi setiap langkah Anda menemukan aset masa depan yang paling bernilai.</p>
+            <p>saya telah berpengalaman di bidang properti sejak tahun 2011, mencakup apartemen, rumah, ruko, hingga kavling, dengan fokus wilayah Tangerang.
+Saya hadir bukan sekadar sebagai perantara, melainkan sebagai partner terpercaya yang membantu setiap klien menemukan hunian impian—dengan pendekatan yang tulus, seolah saya menempatkan diri sebagai Anda.
+Dengan komitmen pada profesionalisme, saya memberikan ruang dan kenyamanan penuh bagi setiap customer untuk mempertimbangkan keputusan terbaik, tanpa tekanan, agar setiap langkah yang diambil menjadi pilihan yang matang dan tanpa penyesalan di masa depan.
+Bagi para investor, saya membantu mengidentifikasi peluang properti dengan potensi nilai tinggi, demi menciptakan keuntungan yang optimal dan berkelanjutan dalam jangka panjang.
+Moto Saya:
+"Client Happy adalah harapan saya.".</p>
         </div>
         <div class="px-6 mb-6">
             <h3 class="text-[#a68966] font-black uppercase text-[10px] tracking-[0.3em]">Achievements</h3>
@@ -264,8 +269,8 @@
                 </div>
                 <div class="profile-text-content">
                     <span class="text-[9px] font-bold text-[#a68966] uppercase tracking-[0.3em] mb-1 block">Property Consultant</span>
-                    <h1 class="text-3xl font-black tracking-tighter mb-1 uppercase">Estate by Echi</h1>
-                    <p class="profile-desc">Membantu Anda menemukan hunian impian dengan proses transparan dan unit terbaik di Park Serpong.</p>
+                    <h1 class="text-3xl font-black tracking-tighter mb-1 uppercase">Sales|Echi</h1>
+                    <p class="profile-desc">Trusted & Result-Oriented Lebih dari sekadar menjual, saya menghadirkan solusi, kepastian, dan nilai investasi terbaik untuk setiap klien.</p>
                     <div class="sosmed-list">
                         <a href="https://www.instagram.com/lippokarawaci.id" target="_blank"><i class="fa-brands fa-instagram"></i></a>
                         <a href="https://www.tiktok.com/@parkserponghomes" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
@@ -284,9 +289,9 @@
         <div class="max-w-6xl mx-auto">
             <h2 class="text-center font-black text-2xl uppercase tracking-tighter mb-10">Unit Park Serpong</h2>
             <div class="flex gap-3 overflow-x-auto no-scrollbar mb-10 pb-2 justify-center">
-                <button onclick="renderUnits(7)" id="btn-7" class="phase-btn active">FASE 07</button>
-                <button onclick="renderUnits(6)" id="btn-6" class="phase-btn">FASE 06</button>
-                <button onclick="renderUnits(5)" id="btn-5" class="phase-btn">FASE 05</button>
+                <button onclick="renderUnits(7)" id="btn-7" class="phase-btn active">FHASE 07</button>
+                <button onclick="renderUnits(6)" id="btn-6" class="phase-btn">FHASE 06</button>
+                <button onclick="renderUnits(5)" id="btn-5" class="phase-btn">FHASE 05</button>
             </div>
             <div id="unit-list" class="grid md:grid-cols-2 gap-10"></div>
         </div>
@@ -337,29 +342,32 @@
         let selectedUnitName = "General Park Serpong";
 
         const unitData = {
-            7: [
-                { name: "Perunggu Beverly Livin", tag: "325 Jt", val: 325000000, desc: "Hunian modern dengan gaya Beverly Hills yang ikonik di Serpong.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
-                { name: "Silver Beverly Livin", tag: "410 Jt", val: 410000000, desc: "Sentuhan mewah dengan tata ruang efisien untuk keluarga muda.", bed: 2, bath: 2, floor: 2, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
-                { name: "Urban Beverly Livin", tag: "500 Jt", val: 500000000, desc: "Desain perkotaan yang dinamis dan berkelas di pusat keramaian.", bed: 3, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
-                { name: "TreeTops Beverly Livin", tag: "550 Jt", val: 550000000, desc: "Nikmati pemandangan asri dari ketinggian unit lantai dua Anda.", bed: 3, bath: 3, floor: 2, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"] },
-                { name: "Gold Beverly Livin", tag: "610 Jt", val: 610000000, desc: "Simbol kemewahan sejati dengan luas bangunan yang maksimal.", bed: 3, bath: 3, floor: 2, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"] },
-                { name: "GoldTops Beverly Livin", tag: "690 Jt", val: 690000000, desc: "Unit paling eksklusif dengan fasilitas ruangan terlengkap.", bed: 4, bath: 4, floor: 2, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"] }
-            ],
-            6: [
-                { name: "Perunggu Livin Tipe B", tag: "315 Jt", val: 315000000, desc: "Hunian compact yang fungsional untuk gaya hidup praktis.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
-                { name: "Silver Livin Tipe S", tag: "495 Jt", val: 495000000, desc: "Keseimbangan sempurna antara gaya dan kenyamanan keluarga.", bed: 3, bath: 2, floor: 2, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
-                { name: "Quartz Livin Tipe Q", tag: "460 Jt", val: 460000000, desc: "Elegan dan minimalis, pilihan tepat untuk investasi masa depan.", bed: 2, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
-                { name: "Gold Livin Tipe G", tag: "590 Jt", val: 590000000, desc: "Kemewahan luas dengan desain fasad yang modern dan gagah.", bed: 3, bath: 3, floor: 2, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"] },
-                { name: "GoldTops Livin Type GT", tag: "660 Jt", val: 660000000, desc: "Varian tertinggi untuk kenyamanan maksimal di lokasi strategis.", bed: 4, bath: 3, floor: 2, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"] }
-            ],
-            5: [
-                { name: "Perunggu Livin Tipe B", tag: "305 Jt", val: 305000000, desc: "Kualitas premium dengan harga yang sangat terjangkau.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
-                { name: "Silver Livin Tipe S", tag: "490 Jt", val: 490000000, desc: "Hunian ideal keluarga harmonis.", bed: 3, bath: 2, floor: 2, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
-                { name: "Quartz Livin Tipe Q", tag: "450 Jt", val: 450000000, desc: "Modernitas dalam ketenangan.", bed: 2, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
-                { name: "Gold Livin Tipe G", tag: "580 Jt", val: 580000000, desc: "Ruang luas untuk kenyamanan ekstra.", bed: 3, bath: 3, floor: 2, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"] },
-                { name: "GoldTops Livin Type GT", tag: "650 Jt", val: 650000000, desc: "Puncak estetika hunian modern di kawasan eksklusif.", bed: 4, bath: 3, floor: 2, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"] }
-            ]
-        };
+    5: [
+        { name: "Bronze Livin Tipe B", tag: "393 Jt", val: 393000000, desc: "Hunian compact fungsional dengan harga perdana yang sangat terjangkau.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
+        { name: "Bronze Livin Tipe BB", tag: "462 Jt", val: 462000000, desc: "Varian Perunggu dengan luas bangunan lebih lega untuk keluarga muda.", bed: 2, bath: 2, floor: 2, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
+        { name: "Quartz Livin Tipe Q", tag: "562 Jt", val: 562000000, desc: "Desain minimalis modern dengan sirkulasi udara dan cahaya yang baik.", bed: 2, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
+        { name: "TreeTops Livin Tipe", tag: "629 Jt", val: 629000000, desc: "Hunian asri dengan pemandangan hijau yang menenangkan dari balkon.", bed: 3, bath: 3, floor: 2, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg", "unit-4.4.jpg"] },
+        { name: "Gold Livin Tipe G", tag: "774 Jt", val: 774000000, desc: "Kemewahan luas dengan tata ruang premium di kawasan eksklusif.", bed: 3, bath: 3, floor: 2, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"] },
+        { name: "GoldTops Livin Type GT", tag: "843 Jt", val: 843000000, desc: "Tipe tertinggi di Fase 5 dengan spesifikasi bangunan paling lengkap.", bed: 4, bath: 4, floor: 2, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"] }
+    ],
+    6: [
+        { name: "Silver Alpha Livin", tag: "534 Jt", val: 534000000, desc: "Hunian praktis di lokasi strategis yang cocok untuk investasi.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
+        { name: "TreeTops Alpha Livin", tag: "655 Jt", val: 655000000, desc: "Gaya hidup modern dengan estetika bangunan yang elegan dan bersih.", bed: 2, bath: 2, floor: 2, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
+        { name: "Gold Alpha Livin", tag: "817 Jt", val: 817000000, desc: "Unit favorit dengan balkon luas untuk menikmati udara segar Serpong.", bed: 3, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
+        { name: "GoldTops Alpha Livin", tag: "897 Jt", val: 897000000, desc: "Hunian prestisius dengan fasad megah dan ruang tamu yang luas.", bed: 3, bath: 3, floor: 2, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"] },
+        { name: "Cendana Alpha Livin", tag: "1,25 M", val: 1250000000, desc: "Kombinasi sempurna antara fungsionalitas dan kemewahan modern.", bed: 4, bath: 3, floor: 2, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg", "unit-5.4.jpg"] },
+    ],
+    7: [
+        { name: "Bronze Beverly Livin", tag: "305 Jt", val: 305000000, desc: "Hunian bergaya Beverly Hills yang ikonik dengan harga kompetitif.", bed: 2, bath: 1, floor: 1, photos: ["unit-1.jpg", "unit-1.1.jpg", "unit-1.2.jpg", "unit-1.3.jpg"] },
+        { name: "Silver Beverly Livin", tag: "423 Jt", val: 423000000, desc: "Kenyamanan ekstra dengan desain interior yang memaksimalkan ruang.", bed: 2, bath: 2, floor: 2, photos: ["unit-2.jpg", "unit-2.1.jpg", "unit-2.2.jpg", "unit-2.3.jpg"] },
+        { name: "Urban Beverly Livin", tag: "569 Jt", val: 569000000, desc: "Gaya urban yang dinamis di pusat perkembangan kawasan Park Serpong.", bed: 3, bath: 2, floor: 2, photos: ["unit-3.jpg", "unit-3.1.jpg", "unit-3.2.jpg", "unit-3.3.jpg"] },
+        { name: "TreeTops Beverly Livin", tag: "568 Jt", val: 568000000, desc: "Nikmati ketenangan hidup dengan desain rumah yang menyatu dengan alam.", bed: 3, bath: 3, floor: 2, photos: ["unit-4.jpg", "unit-4.1.jpg", "unit-4.2.jpg", "unit-4.3.jpg"] },
+        { name: "Gold Beverly Livin", tag: "747 Jt", val: 747000000, desc: "Simbol kemewahan bagi Anda yang mengutamakan kualitas hidup.", bed: 3, bath: 3, floor: 2, photos: ["unit-5.jpg", "unit-5.1.jpg", "unit-5.2.jpg", "unit-5.3.jpg"] },
+        { name: "GoldTops Beverly Livin", tag: "901 Jt", val: 901000000, desc: "Masterpiece di Fase 7 dengan luas bangunan paling maksimal.", bed: 4, bath: 4, floor: 2, photos: ["unit-6.jpg", "unit-6.1.jpg", "unit-6.2.jpg", "unit-6.3.jpg"] }
+    ]
+};
+
+
 
         const profileSect = document.getElementById('profile-section');
         const container = document.querySelector('.profile-container');
@@ -427,7 +435,7 @@
                                 <div class="text-[10px] font-bold text-gray-400 flex items-center gap-2"><i class="fa-solid fa-layer-group text-gray-300"></i> ${u.floor} Lantai</div>
                             </div>
                             <div class="grid grid-cols-2 gap-4 mt-auto">
-                                <button onclick="setKPR('${u.name}', ${u.val})" class="bg-white border-2 border-gray-100 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition">Simulasi</button>
+                                <button onclick="setKPR('${u.name}', ${u.val})" class="bg-white border-2 border-gray-100 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition">Simulasi Kpr</button>
                                 <a href="https://wa.me/${WA_NUMBER}?text=Halo Echi, saya ingin info unit ${u.name}" target="_blank" class="bg-[#2d241d] text-white flex items-center justify-center rounded-2xl text-[10px] font-black uppercase tracking-widest transition">Chat Echi</a>
                             </div>
                         </div>
@@ -486,7 +494,7 @@
         function sendToWA() {
             const harga = document.getElementById('kpr-disp').value;
             const cicilan = document.getElementById('hasil-cicilan').innerText;
-            const text = `Halo Echi, saya tertarik unit *${selectedUnitName}* dengan harga Rp ${harga}. Estimasi cicilan saya ${cicilan}. Mohon info selanjutnya.`;
+            const text = `Halo Echi, saya tertarik unit *${selectedUnitName}* dengan harga Rp ${harga}. Estimasi cicilan saya ${cicilan}. Konsultasi Ke Echi.`;
             window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
         }
 
