@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Echi Property | Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        :root { --gold: #a68966; --dark: #2d241d; --cream: #fdfcf9; --champagne: #f0ebe3; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8f5f0; color: var(--dark); margin: 0; }
+        
+        .admin-card { background: white; border-radius: 2.5rem; border: 1px solid var(--champagne); overflow: hidden; width: 100%; max-width: 600px; margin: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+        input, textarea { background: var(--cream); border: 1px solid var(--champagne); border-radius: 1rem; padding: 14px; width: 100%; outline: none; font-weight: 600; box-sizing: border-box; }
+        input:focus { border-color: var(--gold); background: white; }
+        .submit-button { background: var(--dark); color: white; border-radius: 1.2rem; font-weight: 800; width: 100%; padding: 18px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em; transition: 0.3s; }
+        .submit-button:hover { background: var(--gold); transform: translateY(-3px); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="p-5 min-h-screen flex items-center justify-center">
+
+    <div id="login-screen" class="admin-card p-10 text-center">
+        <div class="w-16 h-16 bg-[#fdfcf9] border border-[#f0ebe3] rounded-2xl flex items-center justify-center mx-auto mb-6 text-[#a68966]">
+            <i class="fa-solid fa-lock text-2xl"></i>
+        </div>
+        <h2 class="text-xl font-black uppercase mb-2">Admin Access</h2>
+        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-8">Masukkan Password Rahasia</p>
+        
+        <input type="password" id="pass-input" placeholder="Password Admin" class="text-center mb-6">
+        <button onclick="checkAccess()" class="submit-button">Masuk ke Panel</button>
+    </div>
+
+    <div id="admin-panel" class="admin-card hidden">
+        <div class="p-8 text-center border-b border-[#f0ebe3]">
+            <h1 class="text-xl font-black uppercase tracking-tighter">Update Unit Baru</h1>
+            <p class="text-[9px] font-bold text-[#a68966] uppercase tracking-[0.2em]">Echi Property Management</p>
+        </div>
+
+        <div class="p-8 space-y-6">
+            <div>
+                <label class="text-[10px] font-black uppercase text-gray-400 ml-1 mb-2 block">Nama Unit</label>
+                <input type="text" id="nama_unit" placeholder="Misal: Bronze Beverly A">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400 ml-1 mb-2 block">Harga (IDR)</label>
+                    <input type="number" id="harga" placeholder="350000000">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400 ml-1 mb-2 block">Fhase</label>
+                    <input type="number" id="fhase" placeholder="7">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div><label class="text-[9px] font-black uppercase text-gray-400 mb-2 block">Kamar</label><input type="number" id="kamar_tidur" value="1" class="text-center"></div>
+                <div><label class="text-[9px] font-black uppercase text-gray-400 mb-2 block">Mandi</label><input type="number" id="kamar_mandi" value="1" class="text-center"></div>
+                <div><label class="text-[9px] font-black uppercase text-gray-400 mb-2 block">Lantai</label><input type="number" id="lantai" value="1" class="text-center"></div>
+            </div>
+
+            <div>
+                <label class="text-[10px] font-black uppercase text-gray-400 ml-1 mb-2 block">Deskripsi</label>
+                <textarea id="deskripsi" rows="3"></textarea>
+            </div>
+
+            <div>
+                <label class="text-[10px] font-black uppercase text-gray-400 ml-1 mb-2 block">Upload Foto (1-5)</label>
+                <input type="file" id="foto_files" multiple accept="image/*" onchange="handlePreview()">
+                <div id="preview-box" class="grid grid-cols-5 gap-2 mt-4"></div>
+            </div>
+
+            <button onclick="prosesUpload()" id="btn_submit" class="submit-button">Posting Unit</button>
+            <button onclick="logout()" class="w-full text-[9px] font-black text-red-300 uppercase mt-4">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = "tes 1"; // GANTI PASSWORD SESUKAMU DI SINI
+        const SUPABASE_URL = "sb_publishable_DR38UkH-RR-otU_dWx80PA_hVeObA1B"; 
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9qb2J6bHR6eWFleHdrc3Vqd3hkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0NzE3ODMsImV4cCI6MjA5MTA0Nzc4M30.HxulW4CnEsasqVmHIIkFeLNPBPDT29ytq94uDvqgT-Q";
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // --- SISTEM LOGIN SIMPEL ---
+        function checkAccess() {
+            const input = document.getElementById('pass-input').value;
+            if (input === ADMIN_PASSWORD) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                sessionStorage.setItem('isAdmin', 'true');
+            } else {
+                alert("Password Salah!");
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('isAdmin');
+            location.reload();
+        }
+
+        // Cek jika sebelumnya sudah login saat refresh
+        if (sessionStorage.getItem('isAdmin') === 'true') {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('admin-panel').classList.remove('hidden');
+        }
+
+        // --- SISANYA LOGIKA UPLOAD (Sama Seperti Sebelumnya) ---
+        function handlePreview() {
+            const container = document.getElementById('preview-box');
+            const files = document.getElementById('foto_files').files;
+            container.innerHTML = '';
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'w-full aspect-square object-cover rounded-lg border';
+                    container.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function prosesUpload() {
+            const btn = document.getElementById('btn_submit');
+            const files = document.getElementById('foto_files').files;
+            if (!document.getElementById('nama_unit').value || files.length === 0) return alert("Isi data dengan lengkap!");
+
+            btn.disabled = true; btn.innerText = "Sabar... Sedang Upload...";
+
+            try {
+                let fotoUrls = [];
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const name = `u_${Date.now()}_${i}.${file.name.split('.').pop()}`;
+                    const { error: upErr } = await sb.storage.from('foto-unit').upload(name, file);
+                    if (upErr) throw upErr;
+                    fotoUrls.push(sb.storage.from('foto-unit').getPublicUrl(name).data.publicUrl);
+                }
+
+                const { error: dbErr } = await sb.from('unit_per_perumahan').insert([{
+                    nama_unit: document.getElementById('nama_unit').value,
+                    harga: parseInt(document.getElementById('harga').value),
+                    fhase: parseInt(document.getElementById('fhase').value),
+                    kamar_tidur: parseInt(document.getElementById('kamar_tidur').value),
+                    kamar_mandi: parseInt(document.getElementById('kamar_mandi').value),
+                    lantai: parseInt(document.getElementById('lantai').value),
+                    deskripsi: document.getElementById('deskripsi').value,
+                    foto_url: fotoUrls
+                }]);
+
+                if (dbErr) throw dbErr;
+                alert("Berhasil!"); location.reload();
+            } catch (e) { alert(e.message); btn.disabled = false; btn.innerText = "Posting Unit"; }
+        }
+    </script>
+</body>
+</html>
