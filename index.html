@@ -253,7 +253,7 @@ Moto Saya:
     </div>
 
     <nav class="fixed top-0 w-full nav-glass px-6 py-5 flex justify-between items-center">
-        <div class="font-extrabold text-sm tracking-tighter uppercase">NEFSI ASRIFAH <span class="text-[#a68966]">| ECHI</span></div>
+        <div id="admin-trigger" class="font-extrabold text-sm tracking-tighter uppercase">NEFSI ASRIFAH <span class="text-[#a68966]">| ECHI</span></div>
         <button onclick="toggleMenu(true)" class="p-1"><i class="fa-solid fa-bars-staggered text-2xl"></i></button>
     </nav>
 
@@ -505,6 +505,21 @@ Moto Saya:
         }
 
         window.onload = () => { renderUnits(7); calc(); };
-    </script>
+    <script>
+    let klikNama = 0;
+    const tombolAdmin = document.getElementById('admin-trigger');
+
+    if (tombolAdmin) {
+        tombolAdmin.style.cursor = 'pointer'; // Biar tahu bisa diklik
+        tombolAdmin.addEventListener('click', () => {
+            klikNama++;
+            if (klikNama === 3) {
+                window.location.href = 'admin.html'; // Pindah ke halaman admin
+            }
+            setTimeout(() => { klikNama = 0; }, 1500); // Reset kalau kelamaan
+        });
+    }
+</script>
+    
 </body>
 </html>
