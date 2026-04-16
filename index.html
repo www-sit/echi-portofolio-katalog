@@ -400,7 +400,7 @@ Moto Saya:
 
         function resetProfile() { document.body.classList.remove('is-transformed'); }
 
-        function renderUnits(fase) {
+        async function renderUnits(fase) {
             const list = document.getElementById('unit-list');
             list.innerHTML = '';
             document.querySelectorAll('.phase-btn').forEach(b => b.classList.toggle('active', b.id === `btn-${fase}`));
