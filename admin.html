@@ -142,7 +142,7 @@
                     fotoUrls.push(sb.storage.from('foto-unit').getPublicUrl(name).data.publicUrl);
                 }
 
-                const { error: dbErr } = await sb.from('unit_per_perumahan').insert([{
+                const { error: dbErr } = await sb.from('unit_perumahan').insert([{
                     nama_unit: document.getElementById('nama_unit').value,
                     harga: parseInt(document.getElementById('harga').value),
                     fhase: parseInt(document.getElementById('fhase').value),
