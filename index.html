@@ -446,6 +446,7 @@ Moto Saya:
                     </div>
                 `;
             });
+        }
             const { data: unitBaru } = await supabaseClient.from('unit_perumahan').select('*');
         if (unitBaru) {
             unitBaru.forEach((u) => {
