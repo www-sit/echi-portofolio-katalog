@@ -479,8 +479,7 @@ Moto Saya:
             unitData[fase].forEach((u, i) => {
                 new Swiper('#sw-u-' + fase + '-' + i, { loop: true, autoplay: { delay: 3000 } });
             });
-        }, 500);
-    } // <--- SEKARANG INI ADALAH SATU-SATUNYA PENUTUP FUNGSI renderUnits
+     } // <--- SEKARANG INI ADALAH SATU-SATUNYA PENUTUP FUNGSI renderUnits
 
         function formatRibuan(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function formatAndCalc(el) { let v = el.value.replace(/\D/g, ""); document.getElementById('kpr-raw').value = v; el.value = formatRibuan(v); calc(); }
