@@ -404,10 +404,14 @@ Moto Saya:
 
         function resetProfile() { document.body.classList.remove('is-transformed'); }
 
-        async function renderUnits(fase) {
+                async function renderUnits(fase) {
             const list = document.getElementById('unit-list');
             list.innerHTML = '';
+            
+            // 1. Update status tombol aktif
             document.querySelectorAll('.phase-btn').forEach(b => b.classList.toggle('active', b.id === `btn-${fase}`));
+            
+            // 2. Render Unit dari Data Manual
             unitData[fase].forEach((u, i) => {
                 const uid = `u-${fase}-${i}`;
                 const mainImg = `fase-${fase}/` + u.photos[0];
@@ -415,6 +419,7 @@ Moto Saya:
                     <div class="swiper-slide" onclick="showDetailPhoto('${uid}', 'fase-${fase}/${p}')">
                         <img src="fase-${fase}/${p}" onerror="this.src='https://placehold.co/400x400?text=Room'">
                     </div>`).join('');
+
                 list.innerHTML += `
                     <div class="unit-card reveal active">
                         <div class="hero-view" id="hero-${uid}">
@@ -431,21 +436,53 @@ Moto Saya:
                         <div class="p-8 flex-grow flex flex-col">
                             <h4 class="font-black text-xl uppercase mb-3">${u.name}</h4>
                             <p class="text-[10px] text-gray-500 font-medium leading-relaxed mb-5">${u.desc}</p>
-                            <p class="text-[9px] font-bold text-gray-400 uppercase mb-1">Mulai Dari</p>
                             <p class="font-black text-2xl text-[#a68966] mb-8">Rp ${u.tag}</p>
-                            <div class="flex gap-6 mb-8 pb-6 border-b border-gray-100">
-                                <div class="text-[10px] font-bold text-gray-400 flex items-center gap-2"><i class="fa-solid fa-bed text-gray-300"></i> ${u.bed} Kamar</div>
-                                <div class="text-[10px] font-bold text-gray-400 flex items-center gap-2"><i class="fa-solid fa-bath text-gray-300"></i> ${u.bath} Mandi</div>
-                                <div class="text-[10px] font-bold text-gray-400 flex items-center gap-2"><i class="fa-solid fa-layer-group text-gray-300"></i> ${u.floor} Lantai</div>
+                            <div class="flex gap-6 mb-8 pb-6 border-b border-gray-100 text-gray-400 font-bold text-[10px]">
+                                <span><i class="fa-solid fa-bed"></i> ${u.bed}</span>
+                                <span><i class="fa-solid fa-bath"></i> ${u.bath}</span>
+                                <span><i class="fa-solid fa-layer-group"></i> ${u.floor}</span>
                             </div>
                             <div class="grid grid-cols-2 gap-4 mt-auto">
-                                <button onclick="setKPR('${u.name}', ${u.val})" class="bg-white border-2 border-gray-100 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition">Simulasi Kpr</button>
-                                <a href="https://wa.me/${WA_NUMBER}?text=Halo Echi, saya ingin info unit ${u.name}" target="_blank" class="bg-[#2d241d] text-white flex items-center justify-center rounded-2xl text-[10px] font-black uppercase tracking-widest transition">Chat Echi</a>
+                                <button onclick="setKPR('${u.name}', ${u.val})" class="bg-white border-2 border-gray-100 py-4 rounded-xl font-bold uppercase text-[10px]">Simulasi KPR</button>
+                                <a href="https://wa.me/${WA_NUMBER}?text=Halo Echi..." target="_blank" class="bg-[#2d241d] text-white py-4 rounded-xl font-bold uppercase text-[10px] text-center flex items-center justify-center">Chat Echi</a>
                             </div>
                         </div>
-                    </div>
+                    </div>`;
             });
-        }
+
+            // 3. Render Unit dari Supabase (Data Dinamis)
+            try {
+                const { data: unitBaru, error } = await supabaseClient.from('unit_perumahan').select('*');
+                if (unitBaru && !error) {
+                    unitBaru.forEach((u) => {
+                        const uid = `sb-${u.id}`;
+                        list.innerHTML += `
+                            <div class="unit-card reveal active">
+                                <div class="hero-view" id="hero-${uid}">
+                                    <img src="${u.foto_url[0]}" onerror="this.src='https://placehold.co/800x800?text=${u.nama_unit}'">
+                                </div>
+                                <div class="p-8 flex-grow flex flex-col">
+                                    <h4 class="font-black text-xl uppercase mb-3">${u.nama_unit}</h4>
+                                    <p class="text-[10px] text-gray-500 font-medium mb-5">${u.deskripsi}</p>
+                                    <p class="font-black text-2xl text-[#a68966] mb-8">Rp ${u.harga.toLocaleString('id-ID')}</p>
+                                    <div class="grid grid-cols-2 gap-4 mt-auto">
+                                        <button onclick="setKPR('${u.nama_unit}', ${u.harga})" class="bg-white border-2 border-gray-100 py-4 rounded-xl font-bold uppercase text-[10px]">Cek KPR</button>
+                                        <a href="https://wa.me/${WA_NUMBER}?text=Halo Echi..." target="_blank" class="bg-black text-white py-4 rounded-xl font-bold uppercase text-[10px] text-center flex items-center justify-center">Tanya Echi</a>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                }
+            } catch (err) { console.error("Error loading Supabase:", err); }
+
+            // 4. Inisialisasi Ulang Swiper untuk Unit Manual
+            setTimeout(() => {
+                unitData[fase].forEach((u, i) => {
+                    new Swiper(`#sw-u-${fase}-${i}`, { loop: true, autoplay: { delay: 3000 } });
+                });
+            }, 500);
+                }
+        
         function formatRibuan(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function formatAndCalc(el) { let v = el.value.replace(/\D/g, ""); document.getElementById('kpr-raw').value = v; el.value = formatRibuan(v); calc(); }
         function calc() {
