@@ -404,117 +404,90 @@ Moto Saya:
 
         function resetProfile() { document.body.classList.remove('is-transformed'); }
 
-                        async function renderUnits(fase) {
-            const list = document.getElementById('unit-list');
-            list.innerHTML = '';
-            
-            // 1. Update status tombol aktif
-            document.querySelectorAll('.phase-btn').forEach(b => b.classList.toggle('active', b.id === `btn-${fase}`));
-            
-            // 2. Render Unit dari Data Manual
-            unitData[fase].forEach((u, i) => {
-                const uid = `u-${fase}-${i}`;
-                const mainImg = `fase-${fase}/` + u.photos[0];
-                const slides = u.photos.slice(1).map(p => `
-                    <div class="swiper-slide" onclick="showDetailPhoto('${uid}', 'fase-${fase}/${p}')">
-                        <img src="fase-${fase}/${p}" onerror="this.src='https://placehold.co/400x400?text=Room'">
+        async function renderUnits(fase) {
+    const list = document.getElementById('unit-list');
+    list.innerHTML = '';
+    
+    // 1. Update tombol aktif
+    document.querySelectorAll('.phase-btn').forEach(b => b.classList.toggle('active', b.id === `btn-${fase}`));
+    
+    // 2. Render Unit Manual
+    if (unitData[fase]) {
+        unitData[fase].forEach((u, i) => {
+            const uid = `u-${fase}-${i}`;
+            const mainImg = `fase-${fase}/` + u.photos[0];
+            const slides = u.photos.slice(1).map(p => `
+                <div class="swiper-slide" onclick="showDetailPhoto('${uid}', 'fase-${fase}/${p}')">
+                    <img src="fase-${fase}/${p}" onerror="this.src='https://placehold.co/400x400?text=Room'">
+                </div>`).join('');
+
+            list.innerHTML += generateUnitHTML(uid, u.name, u.desc, u.tag, u.val, u.bed, u.bath, u.floor, mainImg, slides);
+        });
+    }
+
+    // 3. Render Unit Supabase (Filter Fase & Proteksi Data)
+    try {
+        const { data: unitBaru, error } = await supabaseClient
+            .from('unit_perumahan')
+            .select('*')
+            .eq('fase', fase); // MEMASTIKAN HANYA MUNCUL DI FASE YANG DIPILIH
+
+        if (unitBaru) {
+            unitBaru.forEach((u) => {
+                const uid = `sb-${u.id}`;
+                // Pastikan foto_url adalah array, jika string kita ubah jadi array
+                let fotoArray = Array.isArray(u.foto_url) ? u.foto_url : [u.foto_url];
+                const mainImg = fotoArray[0] || 'https://placehold.co/800x800?text=No+Photo';
+                
+                const slides = fotoArray.slice(1).map(p => `
+                    <div class="swiper-slide" onclick="showDetailPhoto('${uid}', '${p}')">
+                        <img src="${p}" onerror="this.src='https://placehold.co/400x400?text=Room'">
                     </div>`).join('');
 
-                list.innerHTML += `
-                    <div class="unit-card reveal active">
-                        <div class="hero-view" id="hero-${uid}">
-                            <button class="btn-back-photo" onclick="resetToMain('${uid}', '${mainImg}')"><i class="fa-solid fa-camera-rotate"></i></button>
-                            <img src="${mainImg}" onerror="this.src='https://placehold.co/800x800?text=${u.name}'">
-                        </div>
-                        <div class="p-6 border-b border-gray-50 bg-white">
-                            <span class="click-label text-[8px] font-black text-[#a68966] uppercase block text-right mb-4 opacity-60">Click images for detail</span>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="static-photo-wrapper" onclick="resetToMain('${uid}', '${mainImg}')"><img src="${mainImg}"></div>
-                                <div class="swiper swiper-container-custom" id="sw-${uid}"><div class="swiper-wrapper">${slides}</div></div>
-                            </div>
-                        </div>
-                        <div class="p-8 flex-grow flex flex-col">
-                            <h4 class="font-black text-xl uppercase mb-3">${u.name}</h4>
-                            <p class="text-[10px] text-gray-500 font-medium leading-relaxed mb-5">${u.desc}</p>
-                            <p class="font-black text-2xl text-[#a68966] mb-8">Rp ${u.tag}</p>
-                            <div class="flex gap-6 mb-8 pb-6 border-b border-gray-100 text-gray-400 font-bold text-[10px]">
-                                <span><i class="fa-solid fa-bed"></i> ${u.bed} Kamar</span>
-                                <span><i class="fa-solid fa-bath"></i> ${u.bath} Mandi</span>
-                                <span><i class="fa-solid fa-layer-group"></i> ${u.floor} Lantai</span>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4 mt-auto">
-                                <button onclick="setKPR('${u.name}', ${u.val})" class="bg-white border-2 border-gray-100 py-4 rounded-xl font-bold uppercase text-[10px]">Simulasi KPR</button>
-                                <a href="https://wa.me/${WA_NUMBER}?text=Halo Echi..." target="_blank" class="bg-[#2d241d] text-white py-4 rounded-xl font-bold uppercase text-[10px] text-center flex items-center justify-center">Chat Echi</a>
-                            </div>
-                        </div>
-                    </div>`;
+                list.innerHTML += generateUnitHTML(uid, u.nama_unit, u.deskripsi, u.harga.toLocaleString('id-ID'), u.harga, u.kamar_tidur, u.kamar_mandi, u.lantai, mainImg, slides);
             });
-
-            // 3. Render Unit dari Supabase (Filter Berdasarkan Fase & Layout Sama)
-            try {
-                // Filter: hanya ambil unit yang kolom 'fase' nya sama dengan tombol yang diklik
-                const { data: unitBaru, error } = await supabaseClient
-                    .from('unit_perumahan')
-                    .select('*')
-                    .eq('fase', fase); 
-
-                if (unitBaru && !error) {
-                    unitBaru.forEach((u) => {
-                        const uid = `sb-${u.id}`;
-                        const mainImg = u.foto_url[0];
-                        // Mengolah slide foto tambahan (foto ke-2 dst)
-                        const slides = u.foto_url.slice(1).map(p => `
-                            <div class="swiper-slide" onclick="showDetailPhoto('${uid}', '${p}')">
-                                <img src="${p}" onerror="this.src='https://placehold.co/400x400?text=Room'">
-                            </div>`).join('');
-
-                        list.innerHTML += `
-                            <div class="unit-card reveal active">
-                                <div class="hero-view" id="hero-${uid}">
-                                    <button class="btn-back-photo" onclick="resetToMain('${uid}', '${mainImg}')"><i class="fa-solid fa-camera-rotate"></i></button>
-                                    <img src="${mainImg}" onerror="this.src='https://placehold.co/800x800?text=${u.nama_unit}'">
-                                </div>
-                                <div class="p-6 border-b border-gray-50 bg-white">
-                                    <span class="click-label text-[8px] font-black text-[#a68966] uppercase block text-right mb-4 opacity-60">Click images for detail</span>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div class="static-photo-wrapper" onclick="resetToMain('${uid}', '${mainImg}')"><img src="${mainImg}"></div>
-                                        <div class="swiper swiper-container-custom" id="sw-${uid}"><div class="swiper-wrapper">${slides}</div></div>
-                                    </div>
-                                </div>
-                                <div class="p-8 flex-grow flex flex-col">
-                                    <h4 class="font-black text-xl uppercase mb-3">${u.nama_unit}</h4>
-                                    <p class="text-[10px] text-gray-500 font-medium leading-relaxed mb-5">${u.deskripsi}</p>
-                                    <p class="font-black text-2xl text-[#a68966] mb-8">Rp ${u.harga.toLocaleString('id-ID')}</p>
-                                    <div class="flex gap-6 mb-8 pb-6 border-b border-gray-100 text-gray-400 font-bold text-[10px]">
-                                         <span><i class="fa-solid fa-bed"></i> ${u.kamar_tidur} Kamar</span>
-                                         <span><i class="fa-solid fa-bath"></i> ${u.kamar_mandi} Mandi</span>
-                                         <span><i class="fa-solid fa-layer-group"></i> ${u.lantai} Lantai</span>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-4 mt-auto">
-                                        <button onclick="setKPR('${u.nama_unit}', ${u.harga})" class="bg-white border-2 border-gray-100 py-4 rounded-xl font-bold uppercase text-[10px]">Cek KPR</button>
-                                        <a href="https://wa.me/${WA_NUMBER}?text=Halo Echi..." target="_blank" class="bg-black text-white py-4 rounded-xl font-bold uppercase text-[10px] text-center flex items-center justify-center">Tanya Echi</a>
-                                    </div>
-                                </div>
-                            </div>`;
-                    });
-                }
-            } catch (err) { console.error("Error loading Supabase:", err); }
-
-            // 4. Jalankan Swiper untuk semua (Manual & Supabase)
-            setTimeout(() => {
-                // Swiper Unit Manual
-                unitData[fase].forEach((u, i) => {
-                    new Swiper(`#sw-u-${fase}-${i}`, { loop: true, autoplay: { delay: 3000 } });
-                });
-                // Swiper Unit Supabase
-                document.querySelectorAll('.swiper-container-custom').forEach(el => {
-                    if (el.id.startsWith('sw-sb-')) {
-                        new Swiper(`#${el.id}`, { loop: true, autoplay: { delay: 3500 } });
-                    }
-                });
-            }, 500);
         }
-        
+    } catch (err) { console.error("Supabase Error:", err); }
+
+    // 4. Jalankan Swiper
+    setTimeout(() => {
+        document.querySelectorAll('.swiper-container-custom').forEach(el => {
+            new Swiper(`#${el.id}`, { loop: true, autoplay: { delay: 3000 } });
+        });
+    }, 500);
+}
+
+// Fungsi pembantu agar kodingan tidak dobel dan rapi
+function generateUnitHTML(uid, name, desc, tag, val, bed, bath, floor, mainImg, slides) {
+    return `
+        <div class="unit-card reveal active">
+            <div class="hero-view" id="hero-${uid}">
+                <button class="btn-back-photo" onclick="resetToMain('${uid}', '${mainImg}')"><i class="fa-solid fa-camera-rotate"></i></button>
+                <img src="${mainImg}" onerror="this.src='https://placehold.co/800x800?text=${name}'">
+            </div>
+            <div class="p-6 border-b border-gray-50 bg-white">
+                <span class="click-label text-[8px] font-black text-[#a68966] uppercase block text-right mb-4 opacity-60">Click images for detail</span>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="static-photo-wrapper" onclick="resetToMain('${uid}', '${mainImg}')"><img src="${mainImg}"></div>
+                    <div class="swiper swiper-container-custom" id="sw-${uid}"><div class="swiper-wrapper">${slides}</div></div>
+                </div>
+            </div>
+            <div class="p-8 flex-grow flex flex-col">
+                <h4 class="font-black text-xl uppercase mb-3">${name}</h4>
+                <p class="text-[10px] text-gray-500 font-medium leading-relaxed mb-5">${desc}</p>
+                <p class="font-black text-2xl text-[#a68966] mb-8">Rp ${tag}</p>
+                <div class="flex gap-6 mb-8 pb-6 border-b border-gray-100 text-gray-400 font-bold text-[10px]">
+                    <span><i class="fa-solid fa-bed"></i> ${bed}</span>
+                    <span><i class="fa-solid fa-bath"></i> ${bath}</span>
+                    <span><i class="fa-solid fa-layer-group"></i> ${floor}</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mt-auto">
+                    <button onclick="setKPR('${name}', ${val})" class="bg-white border-2 border-gray-100 py-4 rounded-xl font-bold uppercase text-[10px]">Cek KPR</button>
+                    <a href="https://wa.me/${WA_NUMBER}?text=Halo Echi, info unit ${name}" target="_blank" class="bg-black text-white py-4 rounded-xl font-bold uppercase text-[10px] text-center flex items-center justify-center">Tanya Echi</a>
+                </div>
+            </div>
+        </div>`;
+             }
         
         function formatRibuan(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function formatAndCalc(el) { let v = el.value.replace(/\D/g, ""); document.getElementById('kpr-raw').value = v; el.value = formatRibuan(v); calc(); }
