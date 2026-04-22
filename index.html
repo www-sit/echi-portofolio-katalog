@@ -403,14 +403,16 @@ Moto Saya:
         });
 
         function resetProfile() { document.body.classList.remove('is-transformed'); }
-async function renderUnits(fase) {
+
+        async function renderUnits(fase) {
     const list = document.getElementById('unit-list');
+    if (!list) return; // Keamanan jika elemen tidak ditemukan
     list.innerHTML = '';
     
     // 1. Update tombol aktif
     document.querySelectorAll('.phase-btn').forEach(b => b.classList.toggle('active', b.id === `btn-${fase}`));
     
-    // 2. Render Unit Manual
+    // 2. Render Unit Manual (Data Lokal)
     if (unitData[fase]) {
         unitData[fase].forEach((u, i) => {
             const uid = `u-${fase}-${i}`;
@@ -420,44 +422,69 @@ async function renderUnits(fase) {
                     <img src="fase-${fase}/${p}" onerror="this.src='https://placehold.co/400x400?text=Room'">
                 </div>`).join('');
 
-            list.innerHTML += generateUnitHTML(uid, u.name, u.desc, u.tag, u.val, u.bed, u.bath, u.floor, mainImg, slides);
+            list.innerHTML += createUnitCard(uid, u.name, u.desc, u.tag, u.val, u.bed, u.bath, u.floor, mainImg, slides, "manual");
         });
     }
 
-    // 3. Render Unit Supabase (Filter Fase & Proteksi Data)
+    // 3. Render Unit dari Supabase
     try {
         const { data: unitBaru, error } = await supabaseClient
             .from('unit_perumahan')
             .select('*')
-            .eq('fase', fase); // MEMASTIKAN HANYA MUNCUL DI FASE YANG DIPILIH
+            .eq('fase', fase);
+
+        if (error) throw error;
 
         if (unitBaru) {
             unitBaru.forEach((u) => {
                 const uid = `sb-${u.id}`;
-                // Pastikan foto_url adalah array, jika string kita ubah jadi array
-                let fotoArray = Array.isArray(u.foto_url) ? u.foto_url : [u.foto_url];
-                const mainImg = fotoArray[0] || 'https://placehold.co/800x800?text=No+Photo';
                 
-                const slides = fotoArray.slice(1).map(p => `
-                    <div class="swiper-slide" onclick="showDetailPhoto('${uid}', '${p}')">
-                        <img src="${p}" onerror="this.src='https://placehold.co/400x400?text=Room'">
-                    </div>`).join('');
+                // --- PROTEKSI FOTO: Memastikan foto_url selalu jadi Array ---
+                let fotoArray = [];
+                if (Array.isArray(u.foto_url)) {
+                    fotoArray = u.foto_url;
+                } else if (typeof u.foto_url === 'string') {
+                    // Jika user input hanya 1 link teks, atau format JSON string
+                    if (u.foto_url.startsWith('[')) {
+                        fotoArray = JSON.parse(u.foto_url);
+                    } else {
+                        fotoArray = [u.foto_url];
+                    }
+                }
 
-                list.innerHTML += generateUnitHTML(uid, u.nama_unit, u.deskripsi, u.harga.toLocaleString('id-ID'), u.harga, u.kamar_tidur, u.kamar_mandi, u.lantai, mainImg, slides);
+                const mainImg = fotoArray.length > 0 ? fotoArray[0] : 'https://placehold.co/800x800?text=No+Photo';
+                
+                const slides = fotoArray.length > 1 
+                    ? fotoArray.slice(1).map(p => `
+                        <div class="swiper-slide" onclick="showDetailPhoto('${uid}', '${p}')">
+                            <img src="${p}" onerror="this.src='https://placehold.co/400x400?text=Room'">
+                        </div>`).join('')
+                    : `<div class="swiper-slide"><img src="${mainImg}"></div>`;
+
+                list.innerHTML += createUnitCard(uid, u.nama_unit, u.deskripsi, (u.harga ? u.harga.toLocaleString('id-ID') : '0'), u.harga, u.kamar_tidur, u.kamar_mandi, u.lantai, mainImg, slides, "supabase");
             });
         }
-    } catch (err) { console.error("Supabase Error:", err); }
+    } catch (err) {
+        console.error("Gagal memuat data Supabase:", err);
+    }
 
-    // 4. Jalankan Swiper
+    // 4. Jalankan Swiper Animasi
     setTimeout(() => {
         document.querySelectorAll('.swiper-container-custom').forEach(el => {
-            new Swiper(`#${el.id}`, { loop: true, autoplay: { delay: 3000 } });
+            if (el.swiper) el.swiper.destroy(); // Hapus swiper lama jika ada
+            new Swiper(`#${el.id}`, { 
+                loop: true, 
+                autoplay: { delay: 3000, disableOnInteraction: false } 
+            });
         });
-    }, 500);
+    }, 600);
 }
 
-// Fungsi pembantu agar kodingan tidak dobel dan rapi
-function generateUnitHTML(uid, name, desc, tag, val, bed, bath, floor, mainImg, slides) {
+// FUNGSI PENCETAK KARTU (Harus Ada)
+function createUnitCard(uid, name, desc, tag, val, bed, bath, floor, mainImg, slides, type) {
+    const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent('Halo Echi, saya ingin tanya unit ' + name)}`;
+    const btnBg = type === "manual" ? "bg-[#2d241d]" : "bg-black"; // Pembeda sedikit
+    
     return `
         <div class="unit-card reveal active">
             <div class="hero-view" id="hero-${uid}">
@@ -472,17 +499,17 @@ function generateUnitHTML(uid, name, desc, tag, val, bed, bath, floor, mainImg, 
                 </div>
             </div>
             <div class="p-8 flex-grow flex flex-col">
-                <h4 class="font-black text-xl uppercase mb-3">${name}</h4>
-                <p class="text-[10px] text-gray-500 font-medium leading-relaxed mb-5">${desc}</p>
+                <h4 class="font-black text-xl uppercase mb-3">${name || 'Unit Baru'}</h4>
+                <p class="text-[10px] text-gray-500 font-medium leading-relaxed mb-5">${desc || 'Deskripsi belum tersedia'}</p>
                 <p class="font-black text-2xl text-[#a68966] mb-8">Rp ${tag}</p>
                 <div class="flex gap-6 mb-8 pb-6 border-b border-gray-100 text-gray-400 font-bold text-[10px]">
-                    <span><i class="fa-solid fa-bed"></i> ${bed}</span>
-                    <span><i class="fa-solid fa-bath"></i> ${bath}</span>
-                    <span><i class="fa-solid fa-layer-group"></i> ${floor}</span>
+                    <span><i class="fa-solid fa-bed"></i> ${bed || 0}</span>
+                    <span><i class="fa-solid fa-bath"></i> ${bath || 0}</span>
+                    <span><i class="fa-solid fa-layer-group"></i> ${floor || 0}</span>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-auto">
                     <button onclick="setKPR('${name}', ${val})" class="bg-white border-2 border-gray-100 py-4 rounded-xl font-bold uppercase text-[10px]">Cek KPR</button>
-                    <a href="https://wa.me/${WA_NUMBER}?text=Halo Echi, info unit ${name}" target="_blank" class="bg-black text-white py-4 rounded-xl font-bold uppercase text-[10px] text-center flex items-center justify-center">Tanya Echi</a>
+                    <a href="${waLink}" target="_blank" class="${btnBg} text-white py-4 rounded-xl font-bold uppercase text-[10px] text-center flex items-center justify-center">Tanya Echi</a>
                 </div>
             </div>
         </div>`;
