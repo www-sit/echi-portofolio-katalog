@@ -403,8 +403,7 @@ Moto Saya:
         });
 
         function resetProfile() { document.body.classList.remove('is-transformed'); }
-
-        async function renderUnits(fase) {
+async function renderUnits(fase) {
     const list = document.getElementById('unit-list');
     list.innerHTML = '';
     
@@ -487,7 +486,9 @@ function generateUnitHTML(uid, name, desc, tag, val, bed, bath, floor, mainImg, 
                 </div>
             </div>
         </div>`;
-             }
+}
+        
+
         
         function formatRibuan(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function formatAndCalc(el) { let v = el.value.replace(/\D/g, ""); document.getElementById('kpr-raw').value = v; el.value = formatRibuan(v); calc(); }
